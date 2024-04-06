@@ -6,8 +6,11 @@ from os.path import join
 class Player(pygame.sprite.Sprite):
     def __init__(self, pos, groups, collision_sprites, semicollision_sprites):
         super().__init__(groups)
-        self.image = pygame.image.load(join('..', 'graphics', 'player', 'idle', '0.png'))
+        self.image = pygame.image.load(join('..', 'graphics', 'player', '0.png'))
         self.z = Z_LAYERS['main']
+        # self.image = pygame.Surface((64,64))
+        # self.image.fill('red')
+        # self.rect = self.image.get_rect(topleft=pos)
         
         self.rect = self.image.get_rect(topleft=pos)
         self.hitbox_rect = self.rect.inflate(-76, -36)
