@@ -1,4 +1,5 @@
 from pygame import Surface
+from settings import ANIMATION_SPEED, Z_LAYERS
 from settings import *
 
 class Sprite(pygame.sprite.Sprite):
@@ -21,6 +22,26 @@ class AnimatedSprite(Sprite):
     
     def update(self, dt):
         self.animate(dt)
+        
+class Item(AnimatedSprite):
+    def __init__(self, item_type, pos, frames, groups):
+        super().__init__(pos, frames, groups)
+        self.rect.center = pos
+        self.item_type = item_type
+        
+class ParticleEffectSprite(AnimatedSprite):
+    def __init__(self, pos, frames, groups):
+        super().__init__(pos, frames, groups)
+        self.rect.center =  pos
+        self.z = Z_LAYERS['fg']
+        
+    def animate(self, dt):
+        self.frame_index += self.animation_speed * dt
+        if self.frame_index < len(self.frames):
+            self.image = self.frames[int(self.frame_index)]
+        else:
+            self.kill()
+        
         
 class MovingSprite(Sprite):
     def __init__(self, groups, start_pos, end_pos, move_dir, speed): 

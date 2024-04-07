@@ -1,5 +1,5 @@
 from settings import *
-from sprites import Sprite, MovingSprite, AnimatedSprite
+from sprites import Sprite, MovingSprite, AnimatedSprite, Item, ParticleEffectSprite
 from player import Player
 from groups import AllSprites
 
@@ -10,8 +10,11 @@ class Level:
         self.all_sprites = AllSprites()
         self.collision_sprites = pygame.sprite.Group()
         self.semicollision_sprites = pygame.sprite.Group()
+        self.item_sprites = pygame.sprite.Group()
         
         self.setup(tmx_map, level_frames)
+        
+        self.particle_frames = level_frames['effects']
         
     def setup(self, tmx_map, level_frames):   
         # tiles
@@ -39,8 +42,7 @@ class Level:
                 
         # items
         for obj in tmx_map.get_layer_by_name('Items'):
-            frames = level_frames[obj.name]
-            AnimatedSprite((obj.x, obj.y), frames, self.all_sprites)
+            Item(obj.name, (obj.x + TILE_SIZE/2, obj.y + TILE_SIZE/2), level_frames['items'][obj.name], (self.all_sprites, self.item_sprites))
         
         # moving objects
         for obj in tmx_map.get_layer_by_name('Moving Objects'):
@@ -55,8 +57,17 @@ class Level:
                     end_pos = (obj.x + obj.width // 2, obj.y + obj.height) 
                 speed = obj.properties['speed']
                 MovingSprite((self.all_sprites, self.semicollision_sprites), start_pos, end_pos, move_dir, speed)
+    
+    def item_collision(self):
+        if self.item_sprites:
+            item_sprites = pygame.sprite.spritecollide(self.player, self.item_sprites, True)
+            # True means sprite will be destroyed after collision
+            if item_sprites:
+                ParticleEffectSprite((item_sprites[0].rect.center), self.particle_frames['particle'], self.all_sprites)
         
     def run(self, dt):
-        self.all_sprites.update(dt)
         self.display_surface.fill('black')
+        
+        self.all_sprites.update(dt)
+        self.item_collision()
         self.all_sprites.draw(self.player.hitbox_rect.center)

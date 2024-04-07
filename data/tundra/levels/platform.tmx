@@ -270,7 +270,7 @@
   </object>
  </objectgroup>
  <objectgroup id="9" name="Items">
-  <object id="12" name="items" gid="259" x="430" y="238" width="30" height="30"/>
+  <object id="12" name="gold" gid="259" x="430" y="238" width="30" height="30"/>
  </objectgroup>
  <objectgroup id="8" name="Objects">
   <object id="4" name="igloo" gid="257" x="1707.36" y="369.667" width="141.303" height="67.6667"/>
