@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="git" orientation="orthogonal" renderorder="right-down" width="120" height="60" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="12">
+<map version="1.10" tiledversion="git" orientation="orthogonal" renderorder="right-down" width="120" height="60" tilewidth="16" tileheight="16" infinite="0" nextlayerid="10" nextobjectid="14">
  <tileset firstgid="1" source="../tilesets/platform_tiles.tsx"/>
- <tileset firstgid="427" source="../tilesets/Igloo.tsx"/>
- <tileset firstgid="428" source="../../player/0.tsx"/>
+ <tileset firstgid="257" source="../tilesets/Igloo.tsx"/>
+ <tileset firstgid="258" source="../../player/0.tsx"/>
+ <tileset firstgid="259" source="../../items/coin.tsx"/>
  <layer id="1" name="Terrain" width="120" height="60">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,17,20,21,22,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -260,10 +261,19 @@
 </data>
  </layer>
  <objectgroup id="7" name="Moving Objects">
-  <object id="1" x="1482" y="386" width="16" height="372"/>
+  <object id="1" name="helicopter" x="1482" y="386" width="16" height="372">
+   <properties>
+    <property name="flip" type="bool" value="false"/>
+    <property name="platform" type="bool" value="true"/>
+    <property name="speed" type="int" value="100"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup id="9" name="Items">
+  <object id="12" name="items" gid="259" x="430" y="238" width="30" height="30"/>
  </objectgroup>
  <objectgroup id="8" name="Objects">
-  <object id="4" name="igloo" gid="427" x="1707.36" y="369.667" width="141.303" height="67.6667"/>
-  <object id="10" name="player" gid="428" x="63" y="622" width="110" height="96"/>
+  <object id="4" name="igloo" gid="257" x="1707.36" y="369.667" width="141.303" height="67.6667"/>
+  <object id="10" name="player" gid="258" x="63" y="622" width="110" height="96"/>
  </objectgroup>
 </map>

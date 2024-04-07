@@ -28,7 +28,9 @@ class Player(pygame.sprite.Sprite):
         self.platform = None
         
         self.timers = {
-            'wall jump' : Timer(250), 'allow wall jump' : Timer(250)
+            'wall jump' : Timer(250),
+            'allow wall jump' : Timer(250),
+            'platform skip' : Timer(250)
         }
         
     def input(self):
@@ -39,6 +41,8 @@ class Player(pygame.sprite.Sprite):
                 input_vector.x += 1
             if keys[pygame.K_LEFT]:
                 input_vector.x -= 1
+            if keys[pygame.K_DOWN]:
+                self.timers['platform skip'].activate()
             
             (self.direction).x = (input_vector.normalize()).x if input_vector else 0
         
@@ -113,12 +117,14 @@ class Player(pygame.sprite.Sprite):
                     self.direction.y = 0
     
     def semicollision(self):
-         for sprite in self.semicollision_sprites:
-            if sprite.rect.colliderect(self.hitbox_rect):
-                if self.hitbox_rect.bottom >= sprite.rect.top and int(self.old_rect.bottom) <= int(sprite.old_rect.top):
-                    self.hitbox_rect.bottom = sprite.rect.top
-                    self.direction.y = 0
-    
+        if not self.timers['platform skip'].active:
+            for sprite in self.semicollision_sprites:
+                if sprite.rect.colliderect(self.hitbox_rect):
+                    if self.hitbox_rect.bottom >= sprite.rect.top and int(self.old_rect.bottom)-2 <= sprite.old_rect.top:
+                        self.hitbox_rect.bottom = sprite.rect.top
+                        if self.direction.y > 0:
+                            self.direction.y = 0
+        
     def update_timers(self):
         for timer in self.timers:
             self.timers[timer].update()
