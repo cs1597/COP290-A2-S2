@@ -18,7 +18,8 @@ class Game:
     def import_assets(self):
         self.level_frames = {
             'items' : import_sub_folders('..', 'graphics', 'items'),
-            'effects' : import_sub_folders('..', 'graphics', 'effects')
+            'effects' : import_sub_folders('..', 'graphics', 'effects'),
+            'player' : import_sub_folders('..', 'graphics', 'player')
         }
         
     def run(self):

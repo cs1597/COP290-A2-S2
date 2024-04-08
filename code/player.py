@@ -4,16 +4,16 @@ from timer import Timer
 from os.path import join
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, pos, groups, collision_sprites, semicollision_sprites):
+    def __init__(self, pos, groups, collision_sprites, semicollision_sprites, frames):
         super().__init__(groups)
-        self.image = pygame.image.load(join('..', 'graphics', 'player', '0.png'))
         self.z = Z_LAYERS['main']
-        # self.image = pygame.Surface((64,64))
-        # self.image.fill('red')
-        # self.rect = self.image.get_rect(topleft=pos)
+        
+        self.frames, self.frame_index = frames, 0
+        self.state, self.facing_right = 'idle', True
+        self.image = self.frames[self.state][self.frame_index]
         
         self.rect = self.image.get_rect(topleft=pos)
-        self.hitbox_rect = self.rect.inflate(-76, -36)
+        self.hitbox_rect = self.rect.inflate(-50, -28)
         self.old_rect = self.hitbox_rect.copy()
         
         self.direction = vector()
@@ -39,8 +39,10 @@ class Player(pygame.sprite.Sprite):
         if not self.timers['wall jump'].active:
             if keys[pygame.K_RIGHT]:
                 input_vector.x += 1
+                self.facing_right = True
             if keys[pygame.K_LEFT]:
                 input_vector.x -= 1
+                self.facing_right = False
             if keys[pygame.K_DOWN]:
                 self.timers['platform skip'].activate()
             
@@ -128,11 +130,31 @@ class Player(pygame.sprite.Sprite):
     def update_timers(self):
         for timer in self.timers:
             self.timers[timer].update()
+            
+    def animate(self, dt):
+        self.frame_index += ANIMATION_SPEED * dt
+        self.image = self.frames[self.state][int(self.frame_index) % len(self.frames[self.state])]
+        self.image = self.image if self.facing_right else pygame.transform.flip(self.image, True, False)
+        
+    def get_state(self):
+        print(self.frames)
+        if self.on_surface['floor']:
+            self.state = 'idle' if self.direction.x == 0 else 'run'
+        else:
+            if any((self.on_surface['left'], self.on_surface['right'])):
+                self.state = 'wall'
+            else:
+                self.state = 'jump'if self.direction.y > 0 else 'fall'
     
     def update(self, dt):
         self.old_rect = self.hitbox_rect.copy()
         self.update_timers()
+        
         self.input()
         self.move(dt)
         self.platform_move(dt)
         self.check_contact()
+        
+        self.get_state()
+        self.animate(dt)
+        
