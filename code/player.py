@@ -137,7 +137,6 @@ class Player(pygame.sprite.Sprite):
         self.image = self.image if self.facing_right else pygame.transform.flip(self.image, True, False)
         
     def get_state(self):
-        print(self.frames)
         if self.on_surface['floor']:
             self.state = 'idle' if self.direction.x == 0 else 'run'
         else:

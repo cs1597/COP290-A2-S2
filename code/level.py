@@ -42,8 +42,9 @@ class Level:
                     semicollision_sprites = self.semicollision_sprites,
                     frames = level_frames['player'])
             else:
-                print(obj.name, obj.width, obj.height)
-                Sprite((obj.x, obj.y), obj.image, (self.all_sprites, self.collision_sprites))
+                if obj.name != 'igloo':
+                    frames = level_frames[obj.name]
+                    AnimatedSprite((obj.x, obj.y), frames, (self.all_sprites, self.collision_sprites))
                 
         # items
         for obj in tmx_map.get_layer_by_name('Items'):

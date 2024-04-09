@@ -19,7 +19,8 @@ class Game:
         self.level_frames = {
             'items' : import_sub_folders('..', 'graphics', 'items'),
             'effects' : import_sub_folders('..', 'graphics', 'effects'),
-            'player' : import_sub_folders('..', 'graphics', 'player')
+            'player' : import_sub_folders('..', 'graphics', 'player'),
+            'spikes' : import_folder('..', 'graphics', 'enemies', 'floor_spikes')
         }
         
     def run(self):
