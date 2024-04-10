@@ -1,5 +1,5 @@
 from settings import *
-from sprites import Sprite, MovingSprite, AnimatedSprite, Item, ParticleEffectSprite
+from sprites import Sprite, MovingSprite, AnimatedSprite, Item, ParticleEffectSprite, DamageSprite
 from player import Player
 from groups import AllSprites
 
@@ -11,6 +11,7 @@ class Level:
         self.collision_sprites = pygame.sprite.Group()
         self.semicollision_sprites = pygame.sprite.Group()
         self.item_sprites = pygame.sprite.Group()
+        self.damage_sprites = pygame.sprite.Group()
         
         self.setup(tmx_map, level_frames)
         
@@ -44,7 +45,7 @@ class Level:
             else:
                 if obj.name != 'igloo':
                     frames = level_frames[obj.name]
-                    AnimatedSprite((obj.x, obj.y), frames, (self.all_sprites, self.collision_sprites))
+                    DamageSprite((obj.x, obj.y), (obj.properties['damage_width'], obj.properties['damage_height']), frames, (self.all_sprites, self.damage_sprites))
                 
         # items
         for obj in tmx_map.get_layer_by_name('Items'):
@@ -52,6 +53,7 @@ class Level:
         
         # moving objects
         for obj in tmx_map.get_layer_by_name('Moving Objects'):
+            frames = level_frames[obj.name]
             if obj.name == 'helicopter':
                 if obj.width > obj.height:
                     move_dir='x'
@@ -62,7 +64,12 @@ class Level:
                     start_pos = (obj.x + obj.width // 2, obj.y)
                     end_pos = (obj.x + obj.width // 2, obj.y + obj.height) 
                 speed = obj.properties['speed']
-                MovingSprite((self.all_sprites, self.semicollision_sprites), start_pos, end_pos, move_dir, speed)
+                MovingSprite(frames, (self.all_sprites, self.semicollision_sprites), start_pos, end_pos, move_dir, speed, obj.properties['flip'])
+    
+    def hit_collision(self):
+        damage_rects = [sprite.damagebox for sprite in self.damage_sprites]
+        if self.player.hitbox_rect.collidelist(damage_rects) >=0 :
+            self.player.hit()
     
     def item_collision(self):
         if self.item_sprites:
@@ -76,4 +83,5 @@ class Level:
         
         self.all_sprites.update(dt)
         self.item_collision()
+        self.hit_collision()
         self.all_sprites.draw(self.player.hitbox_rect.center)

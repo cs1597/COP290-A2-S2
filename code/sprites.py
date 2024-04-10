@@ -41,13 +41,16 @@ class ParticleEffectSprite(AnimatedSprite):
             self.image = self.frames[int(self.frame_index)]
         else:
             self.kill()
+            
+class DamageSprite(AnimatedSprite):
+    def __init__(self, pos, damagebox, frames, groups):
+        super().__init__(pos, frames, groups)
+        self.damagebox = pygame.Rect(self.rect.topleft, damagebox)
         
         
-class MovingSprite(Sprite):
-    def __init__(self, groups, start_pos, end_pos, move_dir, speed): 
-        surf = pygame.Surface((150,30))  
-        super().__init__(start_pos, surf, groups)
-        self.image.fill('red')
+class MovingSprite(AnimatedSprite):
+    def __init__(self, frames, groups, start_pos, end_pos, move_dir, speed, flip = False): 
+        super().__init__(start_pos, frames, groups)
         if move_dir == 'x':
             self.rect.midleft = start_pos
         else:
@@ -57,8 +60,10 @@ class MovingSprite(Sprite):
         
         self.moving = True
         self.speed = speed
+        self.flip = flip
         self.direction = vector(1,0) if move_dir == 'x' else vector(0,1)
         self.move_dir = move_dir
+        self.rev = {'x': False, 'y': False}
     
     def check_border(self):
         if self.move_dir=='x':
@@ -68,6 +73,7 @@ class MovingSprite(Sprite):
             if self.rect.left <= self.start_pos[0] and self.direction.x==-1:
                 self.direction.x = 1
                 self.rect.left = self.start_pos[0]
+            self.rev['x'] = self.direction.x < 0
         else:
             if self.rect.bottom >= self.end_pos[1] and self.direction.y==1:
                 self.direction.y = -1
@@ -75,8 +81,13 @@ class MovingSprite(Sprite):
             if self.rect.top <= self.start_pos[1] and self.direction.y==-1:
                 self.direction.y = 1
                 self.rect.top = self.start_pos[1]
+            self.rev['y'] = self.direction.y < 0
                 
     def update(self, dt):
         self.old_rect = self.rect.copy()
         self.rect.topleft += self.direction * self.speed * dt
         self.check_border()
+        
+        self.animate(dt)
+        if self.flip:
+            self.image = pygame.transform.flip(self.image, self.rev['x'], self.rev['y'])

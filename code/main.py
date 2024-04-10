@@ -20,7 +20,8 @@ class Game:
             'items' : import_sub_folders('..', 'graphics', 'items'),
             'effects' : import_sub_folders('..', 'graphics', 'effects'),
             'player' : import_sub_folders('..', 'graphics', 'player'),
-            'spikes' : import_folder('..', 'graphics', 'enemies', 'floor_spikes')
+            'spikes' : import_folder('..', 'graphics', 'enemies', 'floor_spikes'),
+            'helicopter' : import_folder('..', 'graphics', 'levels', 'tundra', 'helicopter')
         }
         
     def run(self):
