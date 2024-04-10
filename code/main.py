@@ -21,7 +21,9 @@ class Game:
             'effects' : import_sub_folders('..', 'graphics', 'effects'),
             'player' : import_sub_folders('..', 'graphics', 'player'),
             'spikes' : import_folder('..', 'graphics', 'enemies', 'floor_spikes'),
-            'helicopter' : import_folder('..', 'graphics', 'levels', 'tundra', 'helicopter')
+            'helicopter' : import_folder('..', 'graphics', 'levels', 'tundra', 'helicopter'),
+            'gunner' : import_folder('..', 'graphics', 'enemies', 'gunner'),
+            'bullet' : import_folder('..', 'graphics', 'enemies', 'bullet')
         }
         
     def run(self):

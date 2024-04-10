@@ -1,5 +1,6 @@
 from settings import *
 from sprites import Sprite, MovingSprite, AnimatedSprite, Item, ParticleEffectSprite, DamageSprite
+from enemies import Gunner, Bullet
 from player import Player
 from groups import AllSprites
 
@@ -12,11 +13,13 @@ class Level:
         self.semicollision_sprites = pygame.sprite.Group()
         self.item_sprites = pygame.sprite.Group()
         self.damage_sprites = pygame.sprite.Group()
+        self.bullet_sprites = pygame.sprite.Group()
         
         self.setup(tmx_map, level_frames)
         
         self.particle_frames = level_frames['effects']
-        
+        self.bullet_frames = level_frames['bullet'][0]
+       
     def setup(self, tmx_map, level_frames):   
         # tiles
         for layer in ['BG', 'Terrain', 'FG', 'Platforms']:
@@ -42,6 +45,7 @@ class Level:
                     collision_sprites = self.collision_sprites, 
                     semicollision_sprites = self.semicollision_sprites,
                     frames = level_frames['player'])
+            # traps and other objects
             else:
                 if obj.name != 'igloo':
                     frames = level_frames[obj.name]
@@ -65,6 +69,13 @@ class Level:
                     end_pos = (obj.x + obj.width // 2, obj.y + obj.height) 
                 speed = obj.properties['speed']
                 MovingSprite(frames, (self.all_sprites, self.semicollision_sprites), start_pos, end_pos, move_dir, speed, obj.properties['flip'])
+    
+        for obj in tmx_map.get_layer_by_name('Enemies'):
+            if obj.name == 'gunner':
+                Gunner((obj.x, obj.y), level_frames[obj.name], (self.all_sprites), self.create_bullet, obj.properties['direction'], obj.properties['speed'])
+    
+    def create_bullet(self, pos, direction, speed):
+       Bullet(pos, (self.all_sprites, self.damage_sprites, self.bullet_sprites), self.bullet_frames, direction, speed, self.collision_sprites, self.player) 
     
     def hit_collision(self):
         damage_rects = [sprite.damagebox for sprite in self.damage_sprites]
