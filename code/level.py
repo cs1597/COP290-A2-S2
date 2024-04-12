@@ -48,6 +48,8 @@ class Level:
                     semicollision_sprites = self.semicollision_sprites,
                     frames = level_frames['player'])
             # traps and other objects
+            elif obj.name =='elephant':
+                frames = level_frames[obj.name]
             else:
                 frames = level_frames[obj.name]
                 DamageSprite((obj.x, obj.y), (obj.properties['damage_width'], obj.properties['damage_height']), frames, (self.all_sprites, self.damage_sprites))
