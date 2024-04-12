@@ -49,6 +49,8 @@ class Level:
             # traps and other objects
             else:
                 frames = level_frames[obj.name]
+                if obj.properties['flip']:
+                    frames = [pygame.transform.flip(frame, False, True) for frame in frames]
                 DamageSprite((obj.x, obj.y), (obj.properties['damage_width'], obj.properties['damage_height']), frames, (self.all_sprites, self.damage_sprites))
                 
         # items
@@ -77,8 +79,11 @@ class Level:
                 MovingSprite(frames, (self.all_sprites, self.collision_sprites), start_pos, end_pos, 'x', speed, obj.properties['flip'])
     
         for obj in tmx_map.get_layer_by_name('Enemies'):
+            frames = level_frames[obj.name]
             if obj.name == 'gunner':
-                Gunner((obj.x, obj.y), level_frames[obj.name], (self.all_sprites), self.create_bullet, obj.properties['direction'], obj.properties['speed'])
+                if obj.properties['direction'] == 'left':
+                    frames = [pygame.transform.flip(frame, True, False) for frame in frames]
+                Gunner((obj.x, obj.y), frames, (self.all_sprites), self.create_bullet, obj.properties['direction'], obj.properties['speed'])
     
     def create_bullet(self, pos, direction, speed):
        Bullet(pos, (self.all_sprites, self.damage_sprites, self.bullet_sprites), self.bullet_frames, direction, speed, self.collision_sprites, self.player) 
