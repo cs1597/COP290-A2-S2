@@ -50,11 +50,15 @@ class Level:
             # traps and other objects
             elif obj.name =='elephant':
                 frames = level_frames[obj.name]
+                AnimatedSprite((obj.x, obj.y), frames, (self.all_sprites))
+            elif obj.name =='penguin':
+                frames = level_frames[obj.name]
+                AnimatedSprite((obj.x, obj.y), frames, (self.all_sprites))
             else:
                 frames = level_frames[obj.name]
                 if obj.properties['flip']:
                     frames = [pygame.transform.flip(frame, False, True) for frame in frames]
-                DamageSprite((obj.x, obj.y), (obj.properties['damage_width'], obj.properties['damage_height']), frames, (self.all_sprites, self.damage_sprites))
+                DamageSprite((obj.x, obj.y), (obj.properties['damage_width'], obj.properties['damage_height']), frames, (self.all_sprites, self.damage_sprites), obj.properties['flip'])
                 
         # items
         for obj in tmx_map.get_layer_by_name('Items'):

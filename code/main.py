@@ -12,7 +12,7 @@ class Game:
         self.clock = pygame.time.Clock()
         self.import_assets()
         
-        self.tmx_maps = {0: load_pygame(join('..', 'data', 'levels', 'forest_2.tmx'))}
+        self.tmx_maps = {0: load_pygame(join('..', 'data', 'tundra', 'levels', 'platformer.tmx'))}
         self.current_stage = Level(self.tmx_maps[0], self.level_frames)
         
     def import_assets(self):
@@ -24,7 +24,9 @@ class Game:
             'helicopter' : import_folder('..', 'graphics', 'levels', 'tundra', 'helicopter'),
             'boat' : import_folder('..', 'graphics', 'levels', 'tundra', 'boat'),
             'gunner' : import_folder('..', 'graphics', 'enemies', 'gunner'),
-            'bullet' : import_folder('..', 'graphics', 'enemies', 'bullet')
+            'bullet' : import_folder('..', 'graphics', 'enemies', 'bullet'),
+            'elephant' : import_folder('..', 'graphics', 'animals', 'elephant'),
+            'penguin' : import_folder('..', 'graphics', 'animals', 'penguin')
         }
         
     def run(self):
