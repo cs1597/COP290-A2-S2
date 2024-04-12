@@ -45,7 +45,7 @@ class ParticleEffectSprite(AnimatedSprite):
 class DamageSprite(AnimatedSprite):
     def __init__(self, pos, damagebox, frames, groups):
         super().__init__(pos, frames, groups)
-        self.damagebox = pygame.Rect(self.rect.topleft, damagebox)
+        self.damagebox = pygame.Rect(self.rect.bottomleft, damagebox)
         
         
 class MovingSprite(AnimatedSprite):

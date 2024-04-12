@@ -5,16 +5,18 @@ from timer import Timer
 class Gunner(AnimatedSprite):
     def __init__(self, pos, frames, groups, create_bullet, direction, speed):
         super().__init__(pos, frames, groups)
-        self.shoot_timer = Timer(3000)
+        self.shoot_timer = Timer(5000)
         self.create_bullet = create_bullet
         self.direction = direction
+        if(self.direction == 'left'):
+            self.image = pygame.transform.flip(self.image, True, False)
         self.speed = speed
         self.bullet = None
         
     def shoot(self):
         if not self.shoot_timer.active:
             self.shoot_timer.activate()
-            self.create_bullet(self.rect.center, self.direction, self.speed)
+            self.create_bullet(self.rect.center+vector(20,8), self.direction, self.speed)
             
     def update(self, dt):
         self.shoot_timer.update()
@@ -24,7 +26,6 @@ class Gunner(AnimatedSprite):
 class Bullet(pygame.sprite.Sprite):
     def __init__(self, pos, groups, surf, direction, speed, collision_sprites, player):
         super().__init__(groups)
-        print(938420)
         self.image = surf
         self.rect = self.image.get_rect(center = pos)
         self.damagebox = self.rect.copy()
@@ -47,6 +48,7 @@ class Bullet(pygame.sprite.Sprite):
             self.check_hit()
         
     def move(self, dt):
+        # print(self.direction, type(self.speed), dt)
         self.rect.x += self.direction[0] * self.speed * dt
         self.check_collision()
         

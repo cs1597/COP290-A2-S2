@@ -22,7 +22,7 @@ class Level:
        
     def setup(self, tmx_map, level_frames):   
         # tiles
-        for layer in ['BG', 'Terrain', 'FG', 'Platforms']:
+        for layer in ['BG', 'Terrain', 'FG', 'Platforms', 'Backdrop']:
             for x,y,surf in tmx_map.get_layer_by_name(layer).tiles():
                 groups = [self.all_sprites]
                 if layer == 'Terrain' :
@@ -32,6 +32,7 @@ class Level:
                 match layer:
                     case 'BG': z = Z_LAYERS['bg tiles']
                     case 'FG': z = Z_LAYERS['fg']
+                    case 'Backdrop': z = Z_LAYERS['bg']
                     case _ : z = Z_LAYERS['main']   
                 Sprite((x* TILE_SIZE, y * TILE_SIZE), surf, groups, z)
             
@@ -47,9 +48,8 @@ class Level:
                     frames = level_frames['player'])
             # traps and other objects
             else:
-                if obj.name != 'igloo':
-                    frames = level_frames[obj.name]
-                    DamageSprite((obj.x, obj.y), (obj.properties['damage_width'], obj.properties['damage_height']), frames, (self.all_sprites, self.damage_sprites))
+                frames = level_frames[obj.name]
+                DamageSprite((obj.x, obj.y), (obj.properties['damage_width'], obj.properties['damage_height']), frames, (self.all_sprites, self.damage_sprites))
                 
         # items
         for obj in tmx_map.get_layer_by_name('Items'):
@@ -69,6 +69,12 @@ class Level:
                     end_pos = (obj.x + obj.width // 2, obj.y + obj.height) 
                 speed = obj.properties['speed']
                 MovingSprite(frames, (self.all_sprites, self.semicollision_sprites), start_pos, end_pos, move_dir, speed, obj.properties['flip'])
+    
+            if obj.name == 'boat':
+                speed = obj.properties['speed']
+                start_pos = (obj.x, obj.y + obj.height // 2)
+                end_pos = (obj.x + obj.width, obj.y + obj.height // 2)
+                MovingSprite(frames, (self.all_sprites, self.collision_sprites), start_pos, end_pos, 'x', speed, obj.properties['flip'])
     
         for obj in tmx_map.get_layer_by_name('Enemies'):
             if obj.name == 'gunner':
