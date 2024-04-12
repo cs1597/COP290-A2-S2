@@ -22,7 +22,7 @@ class Level:
        
     def setup(self, tmx_map, level_frames):   
         # tiles
-        for layer in ['BG', 'Terrain', 'FG', 'Platforms', 'Backdrop']:
+        for layer in ['BG', 'Terrain', 'FG', 'Platforms', 'Backdrop', 'FG_2']:
             for x,y,surf in tmx_map.get_layer_by_name(layer).tiles():
                 groups = [self.all_sprites]
                 if layer == 'Terrain' :
@@ -30,6 +30,7 @@ class Level:
                 if layer == 'Platforms':
                     groups.append(self.semicollision_sprites)
                 match layer:
+                    case 'FG_2': z = Z_LAYERS['fg_2']
                     case 'BG': z = Z_LAYERS['bg tiles']
                     case 'FG': z = Z_LAYERS['fg']
                     case 'Backdrop': z = Z_LAYERS['bg']
@@ -47,6 +48,8 @@ class Level:
                     semicollision_sprites = self.semicollision_sprites,
                     frames = level_frames['player'])
             # traps and other objects
+            elif obj.name =='elephant':
+                frames = level_frames[obj.name]
             else:
                 frames = level_frames[obj.name]
                 DamageSprite((obj.x, obj.y), (obj.properties['damage_width'], obj.properties['damage_height']), frames, (self.all_sprites, self.damage_sprites))
