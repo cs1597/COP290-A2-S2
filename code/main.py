@@ -12,7 +12,7 @@ class Game:
         self.clock = pygame.time.Clock()
         self.import_assets()
         
-        self.tmx_maps = {0: load_pygame(join('..', 'data', 'tundra', 'levels', 'platformer.tmx'))}
+        self.tmx_maps = {0: load_pygame(join('..', 'data', 'levels', 'forest_2.tmx'))}
         self.current_stage = Level(self.tmx_maps[0], self.level_frames)
         
     def import_assets(self):
