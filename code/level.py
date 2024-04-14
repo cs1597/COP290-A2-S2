@@ -1,7 +1,7 @@
 from settings import *
 from sprites import Sprite, MovingSprite, AnimatedSprite, Item, ParticleEffectSprite, DamageSprite
 from enemies import Gunner, Bullet
-from player import Player
+from player import Player, MazePlayer
 from groups import AllSprites
 
 class Level:
@@ -113,4 +113,58 @@ class Level:
         self.all_sprites.update(dt)
         self.item_collision()
         self.hit_collision()
+        self.all_sprites.draw(self.player.hitbox_rect.center)
+        
+        
+class MazeLevel:
+    def __init__(self, tmx_map, level_frames):
+        self.display_surface = pygame.display.get_surface()
+        
+        self.all_sprites = AllSprites()
+        self.collision_sprites = pygame.sprite.Group()
+        self.item_sprites = pygame.sprite.Group()
+        
+        self.setup(tmx_map, level_frames)
+
+    def setup(self, tmx_map, level_frames):
+        for layer in ['BG', 'Terrain', 'FG']:
+            for x,y,surf in tmx_map.get_layer_by_name(layer).tiles():
+                groups = [self.all_sprites]
+                if layer == 'Terrain' :
+                    groups.append(self.collision_sprites)
+                match layer:
+                    case 'BG': z = Z_LAYERS['bg tiles']
+                    case 'FG': z = Z_LAYERS['fg']
+                    case _ : z = Z_LAYERS['main']   
+                Sprite((x* TILE_SIZE, y * TILE_SIZE), surf, groups, z)
+            
+        # objects    
+        # for obj in tmx_map.get_layer_by_name('Objects').objects:
+        #     print(obj)
+        for obj in tmx_map.get_layer_by_name('Objects'):
+            if obj.name == 'player':
+                self.player = MazePlayer(
+                    pos = (obj.x, obj.y), 
+                    groups = self.all_sprites, 
+                    collision_sprites = self.collision_sprites, 
+                    frames = level_frames['maze_player'])
+            elif obj.name == 'bush':
+                pass
+                
+        # items
+        for obj in tmx_map.get_layer_by_name('Items'):
+            Item(obj.name, (obj.x + TILE_SIZE/2, obj.y + TILE_SIZE/2), level_frames['items'][obj.name], (self.all_sprites, self.item_sprites))
+        
+    def item_collision(self):
+        if self.item_sprites:
+            item_sprites = pygame.sprite.spritecollide(self.player, self.item_sprites, True)
+            # True means sprite will be destroyed after collision
+            if item_sprites:
+                ParticleEffectSprite((item_sprites[0].rect.center), self.particle_frames['particle'], self.all_sprites)
+                
+    def run(self, dt):
+        self.display_surface.fill((70,100,99))
+        
+        self.all_sprites.update(dt)
+        self.item_collision()
         self.all_sprites.draw(self.player.hitbox_rect.center)
