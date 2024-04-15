@@ -1,5 +1,5 @@
 from settings import *
-from level import Level
+from level import Level, MazeLevel
 from pytmx.util_pygame import load_pygame
 from os.path import join
 from support import *
@@ -12,19 +12,22 @@ class Game:
         self.clock = pygame.time.Clock()
         self.import_assets()
         
-        self.tmx_maps = {0: load_pygame(join('..', 'data', 'levels', 'forest_2.tmx'))}
-        self.current_stage = Level(self.tmx_maps[0], self.level_frames)
+        self.tmx_maps = {0: load_pygame(join('..', 'data', 'levels', 'forest_deer_rescue_maze.tmx'))}
+        self.current_stage = MazeLevel(self.tmx_maps[0], self.level_frames)
         
     def import_assets(self):
         self.level_frames = {
             'items' : import_sub_folders('..', 'graphics', 'items'),
             'effects' : import_sub_folders('..', 'graphics', 'effects'),
             'player' : import_sub_folders('..', 'graphics', 'player'),
+            'maze_player' : import_sub_folders('..', 'graphics', 'maze_player'),
             'spikes' : import_folder('..', 'graphics', 'enemies', 'floor_spikes'),
             'helicopter' : import_folder('..', 'graphics', 'levels', 'tundra', 'helicopter'),
             'boat' : import_folder('..', 'graphics', 'levels', 'tundra', 'boat'),
             'gunner' : import_folder('..', 'graphics', 'enemies', 'gunner'),
-            'bullet' : import_folder('..', 'graphics', 'enemies', 'bullet')
+            'bullet' : import_folder('..', 'graphics', 'enemies', 'bullet'),
+            'elephant' : import_folder('..', 'graphics', 'animals', 'elephant'),
+            'penguin' : import_folder('..', 'graphics', 'animals', 'penguin')
         }
         
     def run(self):
