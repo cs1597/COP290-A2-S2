@@ -31,10 +31,19 @@ class AnimatedSprite(Sprite):
         self.animate(dt)
         
 class Item(AnimatedSprite):
-    def __init__(self, item_type, pos, frames, groups):
+    def __init__(self, item_type, pos, frames, groups, data):
         super().__init__(pos, frames, groups)
+        self.data = data
         self.rect.center = pos
         self.item_type = item_type
+        
+    def activate(self):
+        if self.item_type == 'gold':
+            self.data.coins += 5
+        elif self.item_type == 'diamond':
+            self.data.coins += 10
+        elif self.item_type == 'heart':
+            self.data.health += 1
         
 class ParticleEffectSprite(AnimatedSprite):
     def __init__(self, pos, frames, groups):

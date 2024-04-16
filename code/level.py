@@ -5,8 +5,9 @@ from player import Player, MazePlayer
 from groups import AllSprites
 
 class Level:
-    def __init__(self, tmx_map, level_frames):
+    def __init__(self, tmx_map, level_frames, data):
         self.display_surface = pygame.display.get_surface()
+        self.data = data
         
         self.level_width = tmx_map.width * TILE_SIZE
         self.level_bottom = tmx_map.height * TILE_SIZE
@@ -49,7 +50,8 @@ class Level:
                     groups = self.all_sprites, 
                     collision_sprites = self.collision_sprites, 
                     semicollision_sprites = self.semicollision_sprites,
-                    frames = level_frames['player'])
+                    frames = level_frames['player'],
+                    data = self.data)
             # traps and other objects
             elif obj.name =='elephant':
                 frames = level_frames[obj.name]
@@ -67,7 +69,7 @@ class Level:
                 
         # items
         for obj in tmx_map.get_layer_by_name('Items'):
-            Item(obj.name, (obj.x + TILE_SIZE/2, obj.y + TILE_SIZE/2), level_frames['items'][obj.name], (self.all_sprites, self.item_sprites))
+            Item(obj.name, (obj.x + TILE_SIZE/2, obj.y + TILE_SIZE/2), level_frames['items'][obj.name], (self.all_sprites, self.item_sprites), self.data)
         
         # moving objects
         for obj in tmx_map.get_layer_by_name('Moving Objects'):
@@ -108,8 +110,8 @@ class Level:
     def item_collision(self):
         if self.item_sprites:
             item_sprites = pygame.sprite.spritecollide(self.player, self.item_sprites, True)
-            # True means sprite will be destroyed after collision
             if item_sprites:
+                item_sprites[0].activate()
                 ParticleEffectSprite((item_sprites[0].rect.center), self.particle_frames['particle'], self.all_sprites)
         
     def attack_collision(self):

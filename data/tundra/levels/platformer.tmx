@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="git" orientation="orthogonal" renderorder="right-down" width="120" height="90" tilewidth="16" tileheight="16" infinite="0" nextlayerid="16" nextobjectid="87">
+<map version="1.10" tiledversion="git" orientation="orthogonal" renderorder="right-down" width="120" height="90" tilewidth="16" tileheight="16" infinite="0" nextlayerid="16" nextobjectid="88">
  <tileset firstgid="1" source="../tilesets/platform_tiles.tsx"/>
  <tileset firstgid="257" source="../../items/coin.tsx"/>
  <tileset firstgid="258" source="../../enemies/gunner.tsx"/>
@@ -8,6 +8,7 @@
  <tileset firstgid="261" source="../../items/diamond.tsx"/>
  <tileset firstgid="262" source="../tilesets/snow_background.tsx"/>
  <tileset firstgid="11062" source="../../tsx_files/penguin.tsx"/>
+ <tileset firstgid="11063" source="../../items/heart.tsx"/>
  <layer id="14" name="Backdrop" width="120" height="90">
   <data encoding="csv">
 262,263,264,265,266,267,268,269,270,271,272,273,274,275,276,277,278,279,280,281,282,283,284,285,286,287,288,289,290,291,292,293,294,295,296,297,298,299,300,301,302,303,304,305,306,307,308,309,310,311,312,313,314,315,316,317,318,319,320,321,322,323,324,325,326,327,328,329,330,331,332,333,334,335,336,337,338,339,340,341,342,343,344,345,346,347,348,349,350,351,352,353,354,355,356,357,358,359,360,361,362,363,364,365,366,367,368,369,370,371,372,373,374,375,376,377,378,379,380,381,
@@ -484,6 +485,7 @@
   <object id="79" name="gold" gid="257" x="1230" y="734" width="32" height="32"/>
   <object id="80" name="gold" gid="257" x="1210" y="598" width="32" height="32"/>
   <object id="81" name="gold" gid="257" x="1238" y="414" width="32" height="32"/>
+  <object id="87" name="heart" gid="11063" x="1324" y="439" width="16" height="14"/>
  </objectgroup>
  <objectgroup id="6" name="Objects">
   <object id="16" name="spikes" gid="259" x="1.33333" y="957.333" width="64" height="64">
