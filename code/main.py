@@ -12,8 +12,8 @@ class Game:
         self.clock = pygame.time.Clock()
         self.import_assets()
         
-        self.tmx_maps = {0: load_pygame(join('..', 'data', 'levels', 'forest_deer_rescue_maze.tmx'))}
-        self.current_stage = MazeLevel(self.tmx_maps[0], self.level_frames)
+        self.tmx_maps = {0: load_pygame(join('..', 'data', 'tundra', 'levels', 'platformer.tmx'))}
+        self.current_stage = Level(self.tmx_maps[0], self.level_frames)
         
     def import_assets(self):
         self.level_frames = {
@@ -24,7 +24,7 @@ class Game:
             'spikes' : import_folder('..', 'graphics', 'enemies', 'floor_spikes'),
             'helicopter' : import_folder('..', 'graphics', 'levels', 'tundra', 'helicopter'),
             'boat' : import_folder('..', 'graphics', 'levels', 'tundra', 'boat'),
-            'gunner' : import_folder('..', 'graphics', 'enemies', 'gunner'),
+            'gunner' : import_sub_folders('..', 'graphics', 'enemies', 'gunner'),
             'bullet' : import_folder('..', 'graphics', 'enemies', 'bullet'),
             'elephant' : import_folder('..', 'graphics', 'animals', 'elephant'),
             'penguin' : import_folder('..', 'graphics', 'animals', 'penguin')

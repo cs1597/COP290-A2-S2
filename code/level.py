@@ -8,11 +8,14 @@ class Level:
     def __init__(self, tmx_map, level_frames):
         self.display_surface = pygame.display.get_surface()
         
-        self.all_sprites = AllSprites()
+        self.level_width = tmx_map.width * TILE_SIZE
+        self.level_bottom = tmx_map.height * TILE_SIZE
+        self.all_sprites = AllSprites(tmx_map.width, tmx_map.height)
         self.collision_sprites = pygame.sprite.Group()
         self.semicollision_sprites = pygame.sprite.Group()
         self.item_sprites = pygame.sprite.Group()
         self.damage_sprites = pygame.sprite.Group()
+        self.enemy_sprites = pygame.sprite.Group()
         self.bullet_sprites = pygame.sprite.Group()
         
         self.setup(tmx_map, level_frames)
@@ -51,9 +54,11 @@ class Level:
             elif obj.name =='elephant':
                 frames = level_frames[obj.name]
                 AnimatedSprite((obj.x, obj.y), frames, (self.all_sprites))
+                self.level_finish_rect = pygame.Rect((obj.x, obj.y), (obj.width, obj.height))
             elif obj.name =='penguin':
                 frames = level_frames[obj.name]
                 AnimatedSprite((obj.x, obj.y), frames, (self.all_sprites))
+                self.level_finish_rect = pygame.Rect((obj.x, obj.y), (obj.width, obj.height))
             else:
                 frames = level_frames[obj.name]
                 if obj.properties['flip']:
@@ -88,12 +93,12 @@ class Level:
         for obj in tmx_map.get_layer_by_name('Enemies'):
             frames = level_frames[obj.name]
             if obj.name == 'gunner':
-                if obj.properties['direction'] == 'left':
-                    frames = [pygame.transform.flip(frame, True, False) for frame in frames]
-                Gunner((obj.x, obj.y), frames, (self.all_sprites), self.create_bullet, obj.properties['direction'], obj.properties['speed'])
-    
+                # if obj.properties['direction'] == 'left':
+                    # frames = [pygame.transform.flip(frame, True, False) for frame in frames]
+                Gunner((obj.x, obj.y), frames, (self.all_sprites, self.enemy_sprites), self.create_bullet, obj.properties['direction'], obj.properties['speed'], self.player)
+        
     def create_bullet(self, pos, direction, speed):
-       Bullet(pos, (self.all_sprites, self.damage_sprites, self.bullet_sprites), self.bullet_frames, direction, speed, self.collision_sprites, self.player) 
+       Bullet(pos, (self.all_sprites, self.bullet_sprites), self.bullet_frames, direction, speed, self.collision_sprites, self.player) 
     
     def hit_collision(self):
         damage_rects = [sprite.damagebox for sprite in self.damage_sprites]
@@ -107,12 +112,36 @@ class Level:
             if item_sprites:
                 ParticleEffectSprite((item_sprites[0].rect.center), self.particle_frames['particle'], self.all_sprites)
         
+    def attack_collision(self):
+        # if not self.player.timers['attack_lock'].active:
+            for target in self.enemy_sprites.sprites():
+                facing_target = self.player.rect.centerx<target.rect.centerx and self.player.facing_right or (self.player.rect.centerx>target.rect.centerx and not self.player.facing_right)
+                if target.rect.colliderect(self.player.rect) and self.player.attacking and facing_target:
+                    target.hit()
+                
+        
+    def check_constraint(self):
+        if self.player.hitbox_rect.left<=0:
+            self.player.hitbox_rect.left = 0
+        if self.player.hitbox_rect.right>=self.level_width:
+            self.player.hitbox_rect.right = self.level_width
+            
+        if self.player.hitbox_rect.bottom > self.level_bottom:
+            print('deafs')
+            
+        if self.player.hitbox_rect.colliderect(self.level_finish_rect):
+            print("lessgo")
+            
+        
     def run(self, dt):
         self.display_surface.fill('black')
         
         self.all_sprites.update(dt)
         self.item_collision()
+        self.attack_collision()
         self.hit_collision()
+        self.check_constraint()
+        
         self.all_sprites.draw(self.player.hitbox_rect.center)
         
         
@@ -162,9 +191,19 @@ class MazeLevel:
             if item_sprites:
                 ParticleEffectSprite((item_sprites[0].rect.center), self.particle_frames['particle'], self.all_sprites)
                 
+    def check_constraint(self):
+        if self.player.hitbox_rect.left<=0:
+            self.player.hitbox_rect.left = 0 
+        if self.player.hitbox_rect.right>=self.level_width:
+            self.player.hitbox_rect.right = self.level_width
+            
+        # if self.player.hitbox_rect.bottom > self.level_bottom:
+            
+                
     def run(self, dt):
         self.display_surface.fill((70,100,99))
         
         self.all_sprites.update(dt)
         self.item_collision()
+        self.check_constraint()
         self.all_sprites.draw(self.player.hitbox_rect.center)

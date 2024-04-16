@@ -34,7 +34,7 @@ class Player(pygame.sprite.Sprite):
             'allow wall jump' : Timer(250),
             'platform skip' : Timer(250),
             'attack_lock' : Timer(800),
-            'damage_lock' : Timer(600)
+            'damage_lock' : Timer(1000),
         }
         
     def input(self):
@@ -189,6 +189,7 @@ class Player(pygame.sprite.Sprite):
         self.check_contact()
         
         self.get_state()
+        # print(self.state)
         self.animate(dt)
         
 class MazePlayer(pygame.sprite.Sprite):
