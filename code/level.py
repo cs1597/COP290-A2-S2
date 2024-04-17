@@ -7,7 +7,8 @@ from groups import AllSprites
 class Level:
     def __init__(self, tmx_map, level_frames):
         self.display_surface = pygame.display.get_surface()
-        
+        # self.data=data
+        # self.swtich_stage=switch_stage
         self.all_sprites = AllSprites()
         self.collision_sprites = pygame.sprite.Group()
         self.semicollision_sprites = pygame.sprite.Group()
