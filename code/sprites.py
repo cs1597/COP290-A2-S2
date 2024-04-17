@@ -64,9 +64,9 @@ class DamageSprite(AnimatedSprite):
         if flipped:
             self.damagebox = pygame.Rect(self.rect.topleft, damagebox)
         else:
-            self.damagebox = pygame.Rect(self.rect.bottomleft, damagebox)
-        
-        
+            self.damagebox = pygame.Rect(self.rect.bottomleft, damagebox)    
+            
+                    
 class MovingSprite(AnimatedSprite):
     def __init__(self, frames, groups, start_pos, end_pos, move_dir, speed, flip = False): 
         super().__init__(start_pos, frames, groups)
@@ -110,3 +110,66 @@ class MovingSprite(AnimatedSprite):
         self.animate(dt)
         if self.flip:
             self.image = pygame.transform.flip(self.image, self.rev['x'], self.rev['y'])
+
+class Node(pygame.sprite.Sprite):
+    def __init__(self,pos,surf_black,surf,groups,level,data):
+        super().__init__(groups)
+        self.image = surf
+        self.image_black = surf_black
+        self.rect = self.image.get_rect(center=(pos[0]+TILE_SIZE/2,pos[1]+TILE_SIZE/2))
+        self.z=Z_LAYERS['path']
+        self.level=level
+        self.data=data
+        # self.paths=paths
+    
+    # def can_move(self,direction):
+    #     if direction in list(self.paths.keys()):
+    #         return True
+
+class Icon(pygame.sprite.Sprite):
+    def __init__(self,pos,groups,frames):
+        super().__init__(groups)
+        self.icon = True
+        self.path=None
+        self.direction = vector(0,0)
+        self.speed = 400
+        #images
+        self.frames,self.frame_index=frames,1
+        self.state ='idle'
+        self.image=self.frames[self.state][self.frame_index]
+        self.rect=self.image.get_rect(center=pos)
+        self.z=Z_LAYERS['main']
+    
+    def start_move(self,path):
+        self.rect.center = path[0]
+        self.path = path[1:]
+        self.find_path()
+    
+    def find_path(self):
+        if self.path:
+            print(self.path)
+            if self.rect.centerx == self.path[0][0]: # vertical
+                self.direction = vector(0,1 if self.path[0][1]>self.rect.centery else -1)
+            else: # horizontal
+                self.direction = vector(1 if self.path[0][0]>self.rect.centerx else -1,0)
+        else:
+            self.direction = vector(0,0)
+        
+    def point_collision(self):
+        if self.direction.y ==1 and self.rect.centery>=self.path[0][1] or \
+            self.direction.y ==-1 and self.rect.centery<=self.path[0][1]:
+            self.rect.centery=self.path[0][1]
+            del self.path[0]
+            self.find_path()
+        
+        if self.direction.x ==1 and self.rect.centerx>=self.path[0][0] or \
+            self.direction.x ==-1 and self.rect.centerx<=self.path[0][0]: # left and below the point
+            self.rect.centerx=self.path[0][0]
+            del self.path[0]
+            self.find_path()
+
+
+    def update(self,dt):
+        if self.path:
+            self.point_collision
+            self.rect.center+= self.direction * self.speed * dt
