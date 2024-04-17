@@ -6,6 +6,7 @@ from pytmx.util_pygame import load_pygame
 from os.path import join
 from support import *
 from overworld import Overworld
+from button import Button
 from data import Data
 
 class Game:
@@ -15,37 +16,37 @@ class Game:
         pygame.display.set_caption('Pygame Platformer')
         self.clock = pygame.time.Clock()
         self.import_assets()
-        self.tmx_maps = {0: load_pygame(join('..', 'data', 'levels', 'forest_deer_rescue_maze.tmx')),
-                         1: load_pygame(join('..', 'data', 'levels', 'forest_2.tmx')),
-                         2: load_pygame(join('..', 'data', 'tundra','levels', 'platformer.tmx'))
-                         }
-        self.font = pygame.font.Font(join('..', 'graphics', 'ui', 'runescape_uf.ttf'), 40)
         
+        self.font = pygame.font.Font(join('..', 'graphics', 'ui', 'runescape_uf.ttf'), 40)
         self.ui =UI(self.font, self.ui_frames)
         self.data = Data(self.ui)
-        self.current_stage = Level(self.tmx_maps[2], self.level_frames, self.data)
+        self.stage_state = 'overworld'
         
+        self.tmx_maps = {
+                         1: load_pygame(join('..', 'data', 'levels', 'forest_2.tmx')),
+                         4: load_pygame(join('..', 'data', 'tundra','levels', 'platformer.tmx')),
+                         5: load_pygame(join('..', 'data', 'levels', 'ice_maze.tmx')),
+                         }
+        self.tmx_overworld = load_pygame(join('..', 'data', 'overworld', 'overworld.tmx'))
+        # self.current_stage = Level(self.tmx_maps[1], self.level_frames, self.data, self.switch_stage)
+        self.current_stage = Overworld(self.tmx_overworld, self.overworld_frames, self.data, self.switch_stage)
         self.click = False
+        
+    def get_font(self,size):
+        return pygame.font.Font(join('..', 'graphics', 'ui', 'runescape_uf.ttf'), size)
        
-    # def switch_stage(self, target, unlock = 0):
-    #     if target == 'level':
-    #         pass
-    #     else:
-    #         # self.current_stage = 
-    #         pass
+    def switch_stage(self, target, unlock = 0):
+        if target == 'level':
+            self.stage_state = 'level'
+            self.current_stage = Level(self.tmx_maps[self.data.current_level], self.level_frames, self.audio_files, self.data, self.switch_stage)
+        else:
+            if unlock > 0:
+                self.data.unlocked_level = unlock
+            else:
+                self.data.health += 1
+            self.stage_state = 'overworld'
+            self.current_stage = Overworld(self.tmx_overworld, self.overworld_frames, self.data, self.switch_stage)
         
-        # data contains the ui elements like health, score, etc
-        # have just made it none for now, beacue needed on the front page
-        # self.tmx_overworld = load_pygame(join('..', 'data', 'overworld', 'overworld.tmx'))
-        # self.current_stage = MazeLevel(self.tmx_maps[2], self.level_frames)
-        # self.current_stage = Overworld(self.tmx_overworld, self.data, self.overworld_frames)
-        
-    # def switch_stage(self,target,unlock=0):
-    #     if target=='level':
-    #         self.current_stage=Level()
-    #     else: 
-    #         self.current_stage = Overworld()
-
     def import_assets(self):
         self.level_frames = {
             'items' : import_sub_folders('..', 'graphics', 'items'),
@@ -59,6 +60,7 @@ class Game:
             'bullet' : import_folder('..', 'graphics', 'enemies', 'bullet'),
             'elephant' : import_folder('..', 'graphics', 'animals', 'elephant'),
             'penguin' : import_folder('..', 'graphics', 'animals', 'penguin'),
+            'polar bear': import_folder('..', 'graphics', 'animals', 'polar bear'),
             'overworld_char' : import_sub_folders('..', 'graphics', 'overworld_character'),
             'level_icon': import_folder('..', 'graphics', 'overworld_map', 'point_loc'),
         }
@@ -71,49 +73,72 @@ class Game:
             'coin' : import_folder(join('..', 'graphics', 'ui', 'coin')),
             'heart' : import_folder(join('..', 'graphics', 'ui', 'heart'))
         }
-        
-    # def draw_text(self, text, font, color, surface, x, y):
-    #     textobj = font.render(text, 1, color)
-    #     textrect = textobj.get_rect()
-    #     textrect.topleft = (x,y)
-    #     surface.blit(textobj, textrect)
-        
-        
-    # def pause_menu(self):
-    #     while True:
-    #         self.display_surface.fill((0,0,0))
-    #         print(92834)
-    #         # self.draw_text('Paused', self.font, (255,255,255), self.display_surface, 40, 40)
-            
-    #         mx, my = pygame.mouse.get_pos()
-            
-    #         button_1 = pygame.Rect(50, 200, 200, 50)
-    #         button_2 = pygame.Rect(50, 300, 200, 50)
-    #         if button_1.collidepoint((mx, my)):
-    #             if self.click:
-    #                 break
-    #         if button_2.collidepoint((mx, my)):
-    #             if self.click:
-    #                 pass
-    #         pygame.draw.rect(self.display_surface, (255,255,0), button_1)
-    #         pygame.draw.rect(self.display_surface, (255,255,0), button_2)
+        self.audio_files = {
+            'coin' : pygame.mixer.Sound(join('..', 'audio', 'coin.wav')),
+            'damage' : pygame.mixer.Sound(join('..', 'audio', 'damage.wav')),
+            'hit' : pygame.mixer.Sound(join('..', 'audio', 'hit.wav')),
+            'attack' : pygame.mixer.Sound(join('..', 'audio', 'attack.wav')),
+            }
+        self.bgm_1 = pygame.mixer.Sound(join('..', 'audio', 'bgm1.mp3'))
+        self.bgm_1.set_volume(0.6)
+        self.bgm_1.play(-1)
         
     def run(self):
         while True:
-            # self.click = False
             dt =self.clock.tick(100) / 1000
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
-                # if event.type == pygame.KEYDOWN:
-                #     if event.key == pygame.K_ESCAPE:
-                #         self.pause_menu()
-
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_ESCAPE:
+                        if self.stage_state == 'overworld':
+                            self.main_menu()
+                            
             self.current_stage.run(dt)
             self.ui.update(dt)
             pygame.display.update()
+            
+    def main_menu(self):
+        while True:
+            self.display_surface.fill((255,255,0))
+
+            pointer = pygame.mouse.get_pos()
+
+            main_menu_text = self.get_font(75).render("MAIN MENU", True, "#b68f40")
+            main_menu_rect = main_menu_text.get_rect(center=(640, 200))
+
+            play_button = Button(image=pygame.image.load(join('..', 'graphics', 'buttons', 'menu_button.png')), pos=(640, 350), 
+                                text_input="NEW GAME", font=self.get_font(50), base_color="#d7fcd4", hovering_color="White")
+            options_button = Button(image=pygame.image.load(join('..', 'graphics', 'buttons', 'menu_button.png')), pos=(640, 475), 
+                                text_input="OPTIONS", font=self.get_font(50), base_color="#d7fcd4", hovering_color="White")
+            quit_button = Button(image=pygame.image.load(join('..', 'graphics', 'buttons', 'menu_button.png')), pos=(640, 600), 
+                                text_input="QUIT", font=self.get_font(50), base_color="#d7fcd4", hovering_color="White")
+
+            self.display_surface.blit(main_menu_text, main_menu_rect)
+
+            for button in [play_button, options_button, quit_button]:
+                button.changeColor(pointer)
+                button.update(self.display_surface)
+            
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if play_button.checkForInput(pointer):
+                        self.run()
+                    if options_button.checkForInput(pointer):
+                        # options()
+                        pass
+                    if quit_button.checkForInput(pointer):
+                        pygame.quit()
+                        sys.exit()
+
+            pygame.display.update()
+                
+                
 
 if __name__ == '__main__':
     game = Game()
-    game.run()
+    game.main_menu()

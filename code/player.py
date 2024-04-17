@@ -4,10 +4,12 @@ from timer import Timer
 from os.path import join
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, pos, groups, collision_sprites, semicollision_sprites, frames, data):
+    def __init__(self, pos, groups, collision_sprites, semicollision_sprites, frames, data, switch_stage, audio_files):
         super().__init__(groups)
         self.z = Z_LAYERS['main']
         self.data = data
+        self.switch_stage = switch_stage
+        self.audio_files = audio_files
         
         self.frames, self.frame_index = frames, 0
         self.state, self.facing_right = 'idle', True
@@ -62,6 +64,7 @@ class Player(pygame.sprite.Sprite):
         if not self.timers['attack_lock'].active:
             self.attacking = True
             self.frame_index = 0
+            self.audio_files['attack'].play()
             self.timers['attack_lock'].activate()
             
     def hit(self):
@@ -159,13 +162,14 @@ class Player(pygame.sprite.Sprite):
         if self.state == 'damage' and (self.frame_index >= len(self.frames[self.state])):
             self.state = 'idle'
             self.damaged = False
-        if self.state == 'death' and (self.frame_index >= len(self.frames[self.state])):
-            self.kill()
+        if self.state == 'death' and (self.frame_index >= len(self.frames[self.state])-1):
+            self.switch_stage('overwold', -1)
+            self.data.health += 1
         self.image = self.frames[self.state][int(self.frame_index) % len(self.frames[self.state])]
         self.image = self.image if self.facing_right else pygame.transform.flip(self.image, True, False)
         
     def get_state(self):
-        if self.data.health == 0:
+        if self.data.health <= 0:
             self.state = 'death'
         elif self.on_surface['floor']:
             if self.attacking:

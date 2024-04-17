@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="git" orientation="orthogonal" renderorder="right-down" width="120" height="90" tilewidth="16" tileheight="16" infinite="0" nextlayerid="16" nextobjectid="88">
+<map version="1.10" tiledversion="git" orientation="orthogonal" renderorder="right-down" width="120" height="90" tilewidth="16" tileheight="16" infinite="0" nextlayerid="17" nextobjectid="88">
  <tileset firstgid="1" source="../tilesets/platform_tiles.tsx"/>
  <tileset firstgid="257" source="../../items/coin.tsx"/>
  <tileset firstgid="258" source="../../enemies/gunner.tsx"/>
@@ -103,6 +103,11 @@
 10942,10943,10944,10945,10946,10947,10948,10949,10950,10951,10952,10953,10954,10955,10956,10957,10958,10959,10960,10961,10962,10963,10964,10965,10966,10967,10968,10969,10970,10971,10972,10973,10974,10975,10976,10977,10978,10979,10980,10981,10982,10983,10984,10985,10986,10987,10988,10989,10990,10991,10992,10993,10994,10995,10996,10997,10998,10999,11000,11001,11002,11003,11004,11005,11006,11007,11008,11009,11010,11011,11012,11013,11014,11015,11016,11017,11018,11019,11020,11021,11022,11023,11024,11025,11026,11027,11028,11029,11030,11031,11032,11033,11034,11035,11036,11037,11038,11039,11040,11041,11042,11043,11044,11045,11046,11047,11048,11049,11050,11051,11052,11053,11054,11055,11056,11057,11058,11059,11060,11061
 </data>
  </layer>
+ <objectgroup id="16" name="Data">
+  <properties>
+   <property name="level_unlock" type="int" value="2"/>
+  </properties>
+ </objectgroup>
  <layer id="7" name="BG" width="120" height="90">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -523,7 +528,7 @@
     <property name="flip" type="bool" value="false"/>
    </properties>
   </object>
-  <object id="48" name="player" gid="260" x="100" y="272" width="96" height="96"/>
+  <object id="48" name="player" gid="260" x="68" y="164" width="96" height="96"/>
   <object id="71" name="spikes" gid="259" x="1210" y="1120" width="64" height="64">
    <properties>
     <property name="damage_height" type="int" value="-25"/>

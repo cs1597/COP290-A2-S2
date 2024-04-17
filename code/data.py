@@ -3,8 +3,8 @@ class Data:
         self.coins = 0
         self._health = 5
         self.ui = ui
-        self.unlocked_level = 5
-        self.current_level = 0
+        self.unlocked_level = 1
+        self.current_level = 1
         
     @property
     def health(self):
