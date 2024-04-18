@@ -24,6 +24,7 @@ class Game:
         
         self.tmx_maps = {
                          1: load_pygame(join('..', 'data', 'levels', 'forest_2.tmx')),
+                         2: load_pygame(join('..', 'data', 'levels', 'maze_1.tmx')),
                          4: load_pygame(join('..', 'data', 'tundra','levels', 'platformer.tmx')),
                          5: load_pygame(join('..', 'data', 'levels', 'ice_maze.tmx')),
                          }
@@ -79,7 +80,7 @@ class Game:
             'hit' : pygame.mixer.Sound(join('..', 'audio', 'hit.wav')),
             'attack' : pygame.mixer.Sound(join('..', 'audio', 'attack.wav')),
             }
-        self.bgm_1 = pygame.mixer.Sound(join('..', 'audio', 'bgm1.mp3'))
+        self.bgm_1 = pygame.mixer.Sound(join('..', 'audio', 'bgm2.mp3'))
         self.bgm_1.set_volume(0.6)
         self.bgm_1.play(-1)
         
@@ -111,7 +112,7 @@ class Game:
             play_button = Button(image=pygame.image.load(join('..', 'graphics', 'buttons', 'menu_button.png')), pos=(640, 350), 
                                 text_input="NEW GAME", font=self.get_font(50), base_color="#d7fcd4", hovering_color="White")
             options_button = Button(image=pygame.image.load(join('..', 'graphics', 'buttons', 'menu_button.png')), pos=(640, 475), 
-                                text_input="OPTIONS", font=self.get_font(50), base_color="#d7fcd4", hovering_color="White")
+                                text_input="SETTINGS", font=self.get_font(50), base_color="#d7fcd4", hovering_color="White")
             quit_button = Button(image=pygame.image.load(join('..', 'graphics', 'buttons', 'menu_button.png')), pos=(640, 600), 
                                 text_input="QUIT", font=self.get_font(50), base_color="#d7fcd4", hovering_color="White")
 
@@ -136,9 +137,54 @@ class Game:
                         sys.exit()
 
             pygame.display.update()
-                
-                
+            
+    def start_scene(self):
+        font = pygame.font.SysFont(None, 36)
+        text = "Gradually Displayed Text"
+        text_surface = font.render(text, True, (255, 255, 255))
 
+        # Initial position of the text
+        text_x = -text_surface.get_width()  # Start off-screen to the left
+        text_y = WINDOW_HEIGHT // 2 - text_surface.get_height() // 2
+
+        # Main game loop
+        running = True
+        index = 0  # Index to gradually display text
+        clock = pygame.time.Clock()
+        
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    break
+    
+    # Clear the self.display_surface
+            self.display_surface.fill((0, 0, 0))
+            
+            # Update text position to move it horizontally
+            text_x += 1  # Adjust speed as needed
+            
+            # Render the text gradually, letter by letter
+            partial_text = text[:index]
+            partial_surface = font.render(partial_text, True, (255, 255, 255))
+            
+            # Blit the partial text onto the self.display_surface
+            self.display_surface.blit(partial_surface, (text_x, text_y))
+            
+            # Check if all text is displayed, stop animation
+            if index < len(text):
+                index += 1
+            
+            # Update the display
+            pygame.display.flip()
+            
+            # Cap the frame rate
+            clock.tick(60)
+
+            # Exit loop when text is fully displayed
+            if text_x + partial_surface.get_width() >= WINDOW_WIDTH:
+                break
+        
+            
 if __name__ == '__main__':
     game = Game()
-    game.main_menu()
+    game.start_scene()

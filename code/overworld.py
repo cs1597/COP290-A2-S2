@@ -3,6 +3,7 @@ from sprites import Sprite, MovingSprite, AnimatedSprite, Item, ParticleEffectSp
 from enemies import Gunner, Bullet
 from player import Player, OverworldPlayer
 from groups import WorldSprites
+from os.path import join
 
 class Overworld:
     def __init__(self, tmx_map, overworld_frames, data, switch_stage):
@@ -18,6 +19,9 @@ class Overworld:
         self.node_sprites = pygame.sprite.Group()
         self.setup(tmx_map, overworld_frames)
         self.current_node = [node for node in self.node_sprites if node.level == 0][0]
+        
+    def get_font(self,size):
+        return pygame.font.Font(join('..', 'graphics', 'ui', 'runescape_uf.ttf'), size)
 
     def setup(self, tmx_map, overworld_frames):
         for layer in ['BG', 'Terrain', 'FG']:
@@ -68,6 +72,9 @@ class Overworld:
                 
     def run(self, dt):
         # self.display_surface.fill((70,100,99))
+        # main_menu_text = self.get_font(75).render("PAUSED", True, "#b68f40")
+        # main_menu_rect = main_menu_text.get_rect(center=(640, 200))
+        # self.display_surface.blit(main_menu_text, main_menu_rect)
         self.all_sprites.update(dt)
         self.item_collision()
         self.level_collision()

@@ -71,6 +71,7 @@ class Player(pygame.sprite.Sprite):
         if not self.timers['damage_lock'].active:
             self.damaged = True
             self.frame_index = 0
+            self.audio_files['damage'].play()
             self.timers['damage_lock'].activate()
             self.data.health -= 1
             

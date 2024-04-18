@@ -19,7 +19,7 @@ class Level:
         self.level_unlock = tmx_level_properties['level_unlock']
         self.level_pause = False
         self.pause_timer = Timer(500)
-        self.audio_timer = Timer(1200)
+        self.audio_timer = Timer(1000)
         
         self.all_sprites = AllSprites(tmx_map.width, tmx_map.height)
         self.collision_sprites = pygame.sprite.Group()
@@ -30,7 +30,7 @@ class Level:
         self.bullet_sprites = pygame.sprite.Group()
         self.audio_files = audio_files
         for audio in self.audio_files:
-            audio_files[audio].set_volume(0.4)
+            audio_files[audio].set_volume(0.8)
         
         self.setup(tmx_map, level_frames)
         
@@ -89,6 +89,8 @@ class Level:
         # items
         for obj in tmx_map.get_layer_by_name('Items'):
             Item(obj.name, (obj.x + TILE_SIZE/2, obj.y + TILE_SIZE/2), level_frames['items'][obj.name], (self.all_sprites, self.item_sprites), self.data)
+            if obj.name == 'keys':
+                self.level_finish_rect = pygame.Rect((obj.x, obj.y), (obj.width, obj.height))
         
         # moving objects
         for obj in tmx_map.get_layer_by_name('Moving Objects'):
@@ -135,7 +137,7 @@ class Level:
         overworld_button = Button(image=pygame.image.load(join('..', 'graphics', 'buttons', 'menu_button.png')), pos=(640, 475), 
                             text_input="BACK TO LEVELS", font=self.get_font(50), base_color="#d7fcd4", hovering_color="White")
         options_button = Button(image=pygame.image.load(join('..', 'graphics', 'buttons', 'menu_button.png')), pos=(640, 600), 
-                            text_input="OPTIONS", font=self.get_font(50), base_color="#d7fcd4", hovering_color="White")
+                            text_input="SETTINGS", font=self.get_font(50), base_color="#d7fcd4", hovering_color="White")
         quit_button = Button(image=pygame.image.load(join('..', 'graphics', 'buttons', 'menu_button.png')), pos=(640, 725), 
                             text_input="QUIT", font=self.get_font(50), base_color="#d7fcd4", hovering_color="White")
 
@@ -149,10 +151,6 @@ class Level:
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-            # if event.type == pygame.KEYDOWN:
-            #     if event.key == pygame.K_ESCAPE:
-            #         self.level_paused=False
-            #         break
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if resume_button.checkForInput(pointer):
                     self.level_pause = False
@@ -180,7 +178,7 @@ class Level:
             self.player.hit()
             if not self.audio_timer.active:
                 self.audio_timer.activate()
-                self.audio_files['damage'].play()
+                # self.audio_files['damage'].play()
     
     def item_collision(self):
         if self.item_sprites:
@@ -215,9 +213,6 @@ class Level:
         if self.player.hitbox_rect.colliderect(self.level_finish_rect):
             self.switch_stage('overwold', self.level_unlock)
                 
-        # else:
-        #     self.data.heart+=1
-        #     self.switch_stage('overwold', -1)
                
     def run(self, dt):
         if self.level_pause:
