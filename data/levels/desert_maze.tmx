@@ -543,11 +543,6 @@
    </properties>
   </object>
  </objectgroup>
- <objectgroup id="11" name="Data" locked="1">
-  <properties>
-   <property name="unlock_level" type="int" value="12"/>
-  </properties>
- </objectgroup>
  <layer id="12" name="Platforms" width="100" height="100">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
