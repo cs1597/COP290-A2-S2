@@ -23,7 +23,8 @@ class Game:
         self.stage_state = 'overworld'
         
         self.tmx_maps = {
-                         1: load_pygame(join('..', 'data', 'levels', 'forest_2.tmx')),
+                         1: load_pygame(join('..', 'data', 'levels', 'desert_maze.tmx')),
+                         6: load_pygame(join('..', 'data', 'levels', 'forest_2.tmx')),
                          2: load_pygame(join('..', 'data', 'levels', 'maze_1.tmx')),
                          4: load_pygame(join('..', 'data', 'tundra','levels', 'platformer.tmx')),
                          5: load_pygame(join('..', 'data', 'levels', 'ice_maze.tmx')),
@@ -96,7 +97,13 @@ class Game:
                         if self.stage_state == 'overworld':
                             self.main_menu()
                             
+            coins_text = self.get_font(25).render("COINS: "+str(self.data.coins), True, "#ffffff")
+            coins_rect = coins_text.get_rect(topleft=(10, 30))
+            diamonds_text = self.get_font(25).render("DIAMONDS: "+str(self.data.diamonds), True, "#ffffff")
+            diamonds_rect = diamonds_text.get_rect(topleft=(10, 51))
             self.current_stage.run(dt)
+            self.display_surface.blit(coins_text, coins_rect)
+            self.display_surface.blit(diamonds_text, diamonds_rect)
             self.ui.update(dt)
             pygame.display.update()
             
@@ -144,7 +151,7 @@ class Game:
         text_surface = font.render(text, True, (255, 255, 255))
 
         # Initial position of the text
-        text_x = -text_surface.get_width()  # Start off-screen to the left
+        text_x = -text_surface.get_width()  # Start off-self.display_surface to the left
         text_y = WINDOW_HEIGHT // 2 - text_surface.get_height() // 2
 
         # Main game loop
@@ -159,10 +166,7 @@ class Game:
     
     # Clear the self.display_surface
             self.display_surface.fill((0, 0, 0))
-            
-            # Update text position to move it horizontally
-            text_x += 1  # Adjust speed as needed
-            
+    
             # Render the text gradually, letter by letter
             partial_text = text[:index]
             partial_surface = font.render(partial_text, True, (255, 255, 255))
@@ -170,20 +174,21 @@ class Game:
             # Blit the partial text onto the self.display_surface
             self.display_surface.blit(partial_surface, (text_x, text_y))
             
-            # Check if all text is displayed, stop animation
-            if index < len(text):
-                index += 1
-            
             # Update the display
             pygame.display.flip()
             
             # Cap the frame rate
-            clock.tick(60)
+            clock.tick(10)  # Adjust speed as needed
 
-            # Exit loop when text is fully displayed
-            if text_x + partial_surface.get_width() >= WINDOW_WIDTH:
-                break
-        
+            # Exit loop when all text is displayed
+            if index < len(text):
+                index += 1
+
+            # Exit loop when all text is displayed
+            if index >= len(text):
+                pygame.time.delay(2000)  # Wait for a few seconds before quitting
+                running = False
+                
             
 if __name__ == '__main__':
     game = Game()

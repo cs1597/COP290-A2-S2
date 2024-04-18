@@ -31,7 +31,7 @@ class Overworld:
                     groups.append(self.collision_sprites)
                 match layer:
                     case 'BG': z = Z_LAYERS['bg tiles']
-                    case 'FG': z = Z_LAYERS['fg']
+                    case 'FG': z = Z_LAYERS['fg_2']
                     case _ : z = Z_LAYERS['main']   
                 Sprite((x* TILE_SIZE, y * TILE_SIZE), surf, groups, z)
             

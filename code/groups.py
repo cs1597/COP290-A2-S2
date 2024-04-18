@@ -23,7 +23,7 @@ class WorldSprites(pygame.sprite.Group):
         self.offset.y=-(target_pos[1]-WINDOW_HEIGHT/2)
         self.camera_constraint()
         for sprite in sorted(self,key=lambda sprite:sprite.z):
-            if sprite.z ==Z_LAYERS['path']:
+            if sprite.z ==Z_LAYERS['fg']:
                 if sprite.level<=self.data.unlocked_level:
                     self.display_surface.blit(sprite.image,sprite.rect.center+self.offset)
                 else:

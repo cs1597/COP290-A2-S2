@@ -39,9 +39,9 @@ class Item(AnimatedSprite):
         
     def activate(self):
         if self.item_type == 'gold':
-            self.data.coins += 5
+            self.data.coins += 1
         elif self.item_type == 'diamond':
-            self.data.coins += 10
+            self.data.diamonds += 1
         elif self.item_type == 'heart':
             self.data.health += 1
         
@@ -117,7 +117,7 @@ class Node(pygame.sprite.Sprite):
         self.image = surf
         self.image_black = surf_black
         self.rect = self.image.get_rect(center=(pos[0]+TILE_SIZE/2,pos[1]+TILE_SIZE/2))
-        self.z=Z_LAYERS['path']
+        self.z=Z_LAYERS['fg']
         self.level=level
         self.data=data
         # self.paths=paths
