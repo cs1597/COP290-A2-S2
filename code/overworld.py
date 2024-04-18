@@ -45,10 +45,10 @@ class Overworld:
             elif obj.name == 'Node':
                 Node(
                     pos=(obj.x,obj.y),
-                    surf_black = overworld_frames['point_loc'][0], # forlocked level
-                    surf = overworld_frames['point_loc'][1], # for unlocked level
+                    surf_black = overworld_frames['point_loc'][0], 
+                    surf = overworld_frames['point_loc'][1], 
                     groups = (self.all_sprites,self.node_sprites), 
-                    level=obj.properties['stage'], # stage number
+                    level=obj.properties['stage'], 
                     data= self.data, 
                 )
                 
@@ -66,15 +66,10 @@ class Overworld:
     def item_collision(self):
         if self.item_sprites:
             item_sprites = pygame.sprite.spritecollide(self.player, self.item_sprites, True)
-            # True means sprite will be destroyed after collision
             if item_sprites:
                 ParticleEffectSprite((item_sprites[0].rect.center), self.particle_frames['particle'], self.all_sprites)
                 
     def run(self, dt):
-        # self.display_surface.fill((70,100,99))
-        # main_menu_text = self.get_font(75).render("PAUSED", True, "#b68f40")
-        # main_menu_rect = main_menu_text.get_rect(center=(640, 200))
-        # self.display_surface.blit(main_menu_text, main_menu_rect)
         self.all_sprites.update(dt)
         self.item_collision()
         self.level_collision()
