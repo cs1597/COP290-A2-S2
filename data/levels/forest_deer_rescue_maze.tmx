@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="40" height="40" tilewidth="16" tileheight="16" infinite="0" nextlayerid="15" nextobjectid="381">
+<map version="1.10" tiledversion="git" orientation="orthogonal" renderorder="right-down" width="40" height="40" tilewidth="16" tileheight="16" infinite="0" nextlayerid="15" nextobjectid="381">
  <tileset firstgid="1" source="../tsx_files/tf_jungle_tileset.tsx"/>
  <tileset firstgid="463" source="../tsx_files/deer_1.tsx"/>
  <tileset firstgid="463" name="DesertTilemapBlankBackground" tilewidth="16" tileheight="16" tilecount="210" columns="14">
@@ -421,8 +421,8 @@
   <object id="366" name="bush" gid="119" x="182.6" y="199.986" width="16" height="16"/>
   <object id="378" name="player" gid="673" x="499.944" y="619.124" width="40" height="40"/>
  </objectgroup>
- <objectgroup id="13" name="Items" visible="0" locked="1"/>
- <layer id="14" name="Terrain" width="40" height="40" visible="0">
+ <objectgroup id="13" name="Items" locked="1"/>
+ <layer id="14" name="Terrain" width="40" height="40">
   <data encoding="csv">
 584,584,584,584,584,584,584,584,584,584,584,584,584,584,584,584,584,584,584,253,253,253,253,584,584,584,584,584,584,584,584,584,584,584,584,584,584,584,584,584,
 584,584,584,584,584,584,584,584,584,584,584,584,584,584,584,584,584,584,584,584,0,0,584,584,584,584,584,584,584,584,584,584,584,584,584,584,584,584,584,584,
