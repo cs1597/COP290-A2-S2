@@ -20,10 +20,10 @@ class Player(pygame.sprite.Sprite):
         self.old_rect = self.hitbox_rect.copy()
         
         self.direction = vector()
-        self.speed = 250
-        self.gravity = 1500
+        self.speed = 220
+        self.gravity = 1200
         self.jump = False
-        self.jump_height = 700
+        self.jump_height = 600
         self.attacking = False
         self.damaged = False
         
@@ -88,7 +88,6 @@ class Player(pygame.sprite.Sprite):
             self.direction.y += (self.gravity / 2) * dt
             self.hitbox_rect.y += self.direction.y * dt
             self.direction.y += (self.gravity / 2) * dt
-        
         if self.jump:
             if self.on_surface['floor']:
                 self.timers['allow wall jump'].activate()
@@ -109,7 +108,7 @@ class Player(pygame.sprite.Sprite):
             self.hitbox_rect.topleft += self.platform.direction * self.platform.speed * dt
     
     def check_contact(self):
-        floor_rect = pygame.Rect(self.hitbox_rect.bottomleft, (self.hitbox_rect.width, 2))
+        floor_rect = pygame.Rect(self.hitbox_rect.bottomleft, (self.hitbox_rect.width, 5))
         left_rect = pygame.Rect(self.hitbox_rect.topleft + vector(-2,self.hitbox_rect.height/4), (2,self.hitbox_rect.height/2))
         right_rect = pygame.Rect(self.hitbox_rect.topright + vector(2,self.hitbox_rect.height/4), (2,self.hitbox_rect.height/2))
         collide_rects = [sprite.rect for sprite in self.collision_sprites]
@@ -123,7 +122,10 @@ class Player(pygame.sprite.Sprite):
         sprites = self.collision_sprites.sprites() + self.semicollision_sprites.sprites()
         for sprite in [sprite for sprite in sprites if hasattr(sprite, 'moving')]:
             if sprite.rect.colliderect(floor_rect):
+                # print(1)
                 self.platform = sprite
+            # else:
+            #     print(0)
                 
     def collision(self,axis):
         for sprite in self.collision_sprites:
@@ -202,7 +204,7 @@ class Player(pygame.sprite.Sprite):
         self.check_contact()
         
         self.get_state()
-        # print(self.state)
+        # print(self.on_surface['floor'])
         self.animate(dt)
         
 class MazePlayer(pygame.sprite.Sprite):
@@ -281,10 +283,8 @@ class MazePlayer(pygame.sprite.Sprite):
         
         self.input()
         self.move(dt)
-        
         self.get_state()
         self.animate(dt)
-
 
 class OverworldPlayer(pygame.sprite.Sprite):
     def __init__(self, pos, groups, collision_sprites, frames):

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="16" tileheight="16" infinite="0" nextlayerid="15" nextobjectid="97">
+<map version="1.10" tiledversion="git" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="16" tileheight="16" infinite="0" nextlayerid="15" nextobjectid="97">
  <properties>
   <property name="level_unlock" type="int" value="8"/>
  </properties>
@@ -330,7 +330,7 @@
 </data>
  </layer>
  <objectgroup id="6" name="Objects">
-  <object id="2" name="player" gid="13340" x="34" y="143" width="64" height="64"/>
+  <object id="2" name="player" gid="13340" x="154" y="136.333" width="64" height="64"/>
  </objectgroup>
  <objectgroup id="7" name="Items">
   <object id="7" name="gold" gid="13341" x="86" y="208" width="32" height="32"/>

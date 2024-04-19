@@ -14,7 +14,7 @@ class Game:
     def __init__(self):
         pygame.init()
         self.display_surface = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
-        pygame.display.set_caption('Pygame Platformer')
+        pygame.display.set_caption('Call Of The Wild')
         self.clock = pygame.time.Clock()
         self.import_assets()
         
@@ -44,6 +44,9 @@ class Game:
             join('..', 'graphics', 'cutscene_images', '8.png'),
             join('..', 'graphics', 'cutscene_images', '9.png'),
         ]
+        
+        self.penguin_images = [join('..', 'graphics', 'cutscene_images', '11.png')]
+        self.elephant_images = [join('..', 'graphics', 'cutscene_images', '10.png')]
         # Corresponding scripts for each image
         self.start_scripts = [
             "In the enchanted realm of Wildhaven, where every leaf and stone tells a story...",
@@ -63,6 +66,9 @@ class Game:
             "Nature's balance is restored, thanks to the bravery of one young guardian.",
             "Eli pledges to continue watching over Wildhaven. The journey never truly ends...."
         ]
+        
+        self.penguin_scripts = ["Ice shatters, the cage opens, and warmth returns to the heart"]
+        self.elephant_scripts = ["Reunited, the forest breathes a sigh of relief, the elephant's trumpet a song of joy"]
         
         self.ow_htp = [
             "This is the OVERWORLD.",
@@ -84,7 +90,9 @@ class Game:
         ]
         
         self.tmx_maps = {
+                         8: load_pygame(join('..', 'data', 'levels', 'desert_level.tmx')),
                          7: load_pygame(join('..', 'data', 'levels', 'desert_maze.tmx')),
+                         7: load_pygame(join('..', 'data', 'levels', 'forest_new_vel.tmx')),
                          5: load_pygame(join('..', 'data', 'levels', 'forest_maze_2.tmx')),
                          4: load_pygame(join('..', 'data', 'levels', 'forest_2.tmx')),
                          3: load_pygame(join('..', 'data', 'levels', 'maze_1.tmx')),
@@ -172,6 +180,7 @@ class Game:
                 break
             time.sleep(1)
         
+        pygame.mixer.stop()
         self.main_menu()
         
     def victory(self):
@@ -184,8 +193,37 @@ class Game:
             time.sleep(1.5) 
         
         self.first_time = True
+        pygame.mixer.stop()
         self.main_menu()
 
+    def defeat(self):
+        for idx, image_path in enumerate(self.defeat_images):
+            image = pygame.image.load(image_path).convert_alpha()
+            if self.fade_in(image):
+                break
+            if self.display_text_animation(self.defeat_scripts[idx], (40, 30)):
+                break
+            time.sleep(1.5) 
+        pygame.mixer.stop()
+            
+    def penguin(self):
+        for idx, image_path in enumerate(self.penguin_images):
+            image = pygame.image.load(image_path).convert_alpha()
+            if self.fade_in(image):
+                break
+            if self.display_text_animation(self.penguin_scripts[idx], (40, 30)):
+                break
+            time.sleep(1.5)
+        
+    def elephant(self):
+        for idx, image_path in enumerate(self.elephant_images):
+            image = pygame.image.load(image_path).convert_alpha()
+            if self.fade_in(image):
+                break
+            if self.display_text_animation(self.elephant_scripts[idx], (40, 30)):
+                break
+            time.sleep(1.5)
+        
     def defeat(self):
         for idx, image_path in enumerate(self.defeat_images):
             image = pygame.image.load(image_path).convert_alpha()
@@ -209,13 +247,19 @@ class Game:
             self.ow_bgm.play(-1)
             if unlock == 9:
                 self.victory()
+            if unlock == 3:
+                self.penguin()
+            if unlock == 5:
+                self.elephant()
             if unlock > 0:
                 self.data.unlocked_level = unlock
+                self.data.health = self.data.health
             else:
                 self.data.health -= 1
                 if self.data.health == 0:
                     self.defeat()
             self.stage_state = 'overworld'
+            print(self.data.health)
             self.current_stage = Overworld(self.tmx_overworld, self.overworld_frames, self.data, self.switch_stage)
         
     def import_assets(self):
@@ -231,6 +275,7 @@ class Game:
             'bullet' : import_folder('..', 'graphics', 'enemies', 'bullet'),
             'elephant' : import_folder('..', 'graphics', 'animals', 'elephant'),
             'penguin' : import_folder('..', 'graphics', 'animals', 'penguin'),
+            'camel': import_folder('..', 'graphics', 'animals', 'camel'),
             'polar bear': import_folder('..', 'graphics', 'animals', 'polar bear'),
             'overworld_char' : import_sub_folders('..', 'graphics', 'overworld_character'),
             'level_icon': import_folder('..', 'graphics', 'overworld_map', 'point_loc'),
@@ -338,7 +383,7 @@ class Game:
                         self.data.health = 5
                         self.data.coins = 0
                         self.data.diamonds = 0
-                        self.data.unlock_level = 1
+                        self.data.unlocked_level = 8
                         self.data.current_level = 1
                         self.opening_cutscene()
                     if options_button.checkForInput(pointer):
@@ -401,9 +446,30 @@ class Game:
 
             pygame.display.update()
    
+    def cover(self):
+        background_image = pygame.image.load(join('..', 'graphics', 'backgrounds','cover.png'))
+        while True:
+            self.display_surface.blit(background_image, (0, 0))
+            main_menu_text = self.get_font(120).render("CALL OF THE WILD", True, "#000000")
+            main_menu_rect = main_menu_text.get_rect(center=(640, 140))
+            
+            txt_menu_text = self.get_font(25).render("PRESS SPACE TO CONTINUE", True, "#1addeb")
+            txt_menu_rect = txt_menu_text.get_rect(center=(1150, 980))
+            
+            self.display_surface.blit(main_menu_text, main_menu_rect)
+            self.display_surface.blit(txt_menu_text, txt_menu_rect)
+            
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+                    self.main_menu()
+                    
+            pygame.display.update()
 
 def main():
     game = Game()
-    game.main_menu()
+    game.cover()
     
 main()

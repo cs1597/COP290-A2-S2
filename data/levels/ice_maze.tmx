@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="160" height="160" tilewidth="16" tileheight="16" infinite="0" nextlayerid="15" nextobjectid="193">
+<map version="1.10" tiledversion="git" orientation="orthogonal" renderorder="right-down" width="160" height="160" tilewidth="16" tileheight="16" infinite="0" nextlayerid="15" nextobjectid="193">
  <tileset firstgid="1" source="../tundra/tilesets/platform_tiles.tsx"/>
  <tileset firstgid="257" source="../tsx_files/ice_maze.tsx"/>
  <tileset firstgid="258" source="../items/coin.tsx"/>
@@ -1141,12 +1141,6 @@
   <object id="181" name="gunner" gid="260" x="1345.15" y="464.788" width="64" height="64">
    <properties>
     <property name="direction" value="right"/>
-    <property name="speed" type="int" value="120"/>
-   </properties>
-  </object>
-  <object id="182" name="gunner" gid="2147483908" x="1901.15" y="1713.31" width="64" height="64">
-   <properties>
-    <property name="direction" value="left"/>
     <property name="speed" type="int" value="120"/>
    </properties>
   </object>

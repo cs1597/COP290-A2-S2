@@ -58,7 +58,6 @@ class Level:
         # objects    
         for obj in tmx_map.get_layer_by_name('Objects'):
             if obj.name == 'player':
-                print(obj.name, obj.x, obj.y)
                 self.player = Player(
                     pos = (obj.x, obj.y), 
                     groups = self.all_sprites, 
@@ -129,7 +128,8 @@ class Level:
         return pygame.font.Font(join('..', 'graphics', 'ui', 'runescape_uf.ttf'), size)
     
     def pause_menu(self):
-        self.display_surface.fill((255,255,0,50))
+        background_image = pygame.image.load(join('..', 'graphics', 'backgrounds','pause_bg.png'))
+        self.display_surface.blit(background_image, (0, 0))
 
         pointer = pygame.mouse.get_pos()
 
@@ -141,14 +141,12 @@ class Level:
                             text_input="RESUME", font=self.get_font(50), base_color="#d7fcd4", hovering_color="White")
         overworld_button = Button(image=pygame.image.load(join('..', 'graphics', 'buttons', 'menu_button.png')), pos=(640, 475), 
                             text_input="BACK TO LEVELS", font=self.get_font(50), base_color="#d7fcd4", hovering_color="White")
-        options_button = Button(image=pygame.image.load(join('..', 'graphics', 'buttons', 'menu_button.png')), pos=(640, 600), 
-                            text_input="SETTINGS", font=self.get_font(50), base_color="#d7fcd4", hovering_color="White")
-        quit_button = Button(image=pygame.image.load(join('..', 'graphics', 'buttons', 'menu_button.png')), pos=(640, 725), 
+        quit_button = Button(image=pygame.image.load(join('..', 'graphics', 'buttons', 'menu_button.png')), pos=(640, 600), 
                             text_input="QUIT", font=self.get_font(50), base_color="#d7fcd4", hovering_color="White")
 
         self.display_surface.blit(main_menu_text, main_menu_rect)
 
-        for button in [resume_button, overworld_button, options_button, quit_button]:
+        for button in [resume_button, overworld_button, quit_button]:
             button.changeColor(pointer)
             button.update(self.display_surface)
         
@@ -162,8 +160,6 @@ class Level:
                 if overworld_button.checkForInput(pointer):
                     self.switch_stage('overworld', -1)
                     self.level_pause = False
-                if options_button.checkForInput(pointer):
-                    pass
                 if quit_button.checkForInput(pointer):
                     pygame.quit()
                     sys.exit()
@@ -212,7 +208,6 @@ class Level:
             self.player.hitbox_rect.right = self.level_width
             
         if self.player.hitbox_rect.bottom > self.level_bottom:
-            # self.data.health=self.data.health
             self.switch_stage('overworld', -1)
 
         if self.data.level_health == 0:
@@ -264,9 +259,6 @@ class MazeLevel:
                     case _ : z = Z_LAYERS['main']   
                 Sprite((x* TILE_SIZE, y * TILE_SIZE), surf, groups, z)
             
-        # objects    
-        # for obj in tmx_map.get_layer_by_name('Objects').objects:
-        #     print(obj)
         for obj in tmx_map.get_layer_by_name('Objects'):
             if obj.name == 'player':
                 self.player = MazePlayer(
