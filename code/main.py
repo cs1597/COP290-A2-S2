@@ -38,6 +38,12 @@ class Game:
             join('..', 'graphics', 'cutscene_images', '5.png'),
             join('..', 'graphics', 'cutscene_images', '6.png'),
         ]
+        
+        self.victory_images = [
+            join('..', 'graphics', 'cutscene_images', '7.png'),
+            join('..', 'graphics', 'cutscene_images', '8.png'),
+            join('..', 'graphics', 'cutscene_images', '9.png'),
+        ]
         # Corresponding scripts for each image
         self.start_scripts = [
             "In the enchanted realm of Wildhaven, where every leaf and stone tells a story...",
@@ -51,6 +57,13 @@ class Game:
             "In the shadowed silence of the forest, Eli faces his toughest moment yet.",
             "Rise again, Eli. The forest calls, your journey awaits, with a renewed spirit."
         ]
+        
+        self.victory_scripts = [
+            "As the sun shines anew over Wildhaven, Eli and his furry friends revel in the joy of freedom.",
+            "Nature's balance is restored, thanks to the bravery of one young guardian.",
+            "Eli pledges to continue watching over Wildhaven. The journey never truly ends...."
+        ]
+        
         self.ow_htp = [
             "This is the OVERWORLD.",
             "Use W, A, S, D to navigate the player",
@@ -78,12 +91,18 @@ class Game:
                          2: load_pygame(join('..', 'data', 'tundra','levels', 'platformer.tmx')),
                          1: load_pygame(join('..', 'data', 'levels', 'ice_maze.tmx')),
                          }
+        
         self.tmx_overworld = load_pygame(join('..', 'data', 'overworld', 'overworld.tmx'))
-        # self.current_stage = Level(self.tmx_maps[1], self.level_frames, self.data, self.switch_stage)
         self.current_stage = Overworld(self.tmx_overworld, self.overworld_frames, self.data, self.switch_stage)
-        self.bgm_1 = pygame.mixer.Sound(join('..', 'audio', 'ow_bgm.wav'))
-        self.bgm_1.set_volume(0.6)
+        # self.bgm_1 = pygame.mixer.Sound(join('..', 'audio', 'ow_bgm.wav'))
+        # self.bgm_1.set_volume(0.6)
         self.click = False
+        self.level_bgm = pygame.mixer.Sound(join('..', 'audio', 'level_bgm.mp3'))
+        self.ow_bgm = pygame.mixer.Sound(join('..', 'audio', 'ow_bgm.mp3'))
+        self.start_cs_bgm = pygame.mixer.Sound(join('..', 'audio', 'start_cs.mp3'))
+        self.level_bgm.set_volume(0.6)
+        self.ow_bgm.set_volume(0.6)
+        self.start_cs_bgm.set_volume(0.6)
 
     def get_font(self,size):
         return pygame.font.Font(join('..', 'graphics', 'ui', 'runescape_uf.ttf'), size)
@@ -122,6 +141,8 @@ class Game:
         return False
 
     def opening_cutscene(self):
+        pygame.mixer.stop()
+        self.start_cs_bgm.play(-1)
         for idx, image_path in enumerate(self.start_images):
             image = pygame.image.load(image_path).convert_alpha()
             if self.fade_in(image):
@@ -130,6 +151,8 @@ class Game:
                 break
             time.sleep(1.5) 
 
+        pygame.mixer.stop()
+        self.ow_bgm.play(-1)
         self.run()
         
     def how_to_play(self):
@@ -150,6 +173,18 @@ class Game:
             time.sleep(1)
         
         self.main_menu()
+        
+    def victory(self):
+        for idx, image_path in enumerate(self.victory_images):
+            image = pygame.image.load(image_path).convert_alpha()
+            if self.fade_in(image):
+                break
+            if self.display_text_animation(self.victory_scripts[idx], (40, 30)):
+                break
+            time.sleep(1.5) 
+        
+        self.first_time = True
+        self.main_menu()
 
     def defeat(self):
         for idx, image_path in enumerate(self.defeat_images):
@@ -166,11 +201,14 @@ class Game:
     def switch_stage(self, target, unlock = 0):
         pygame.mixer.stop()
         if target == 'level':
+            self.level_bgm.play(-1)
             self.stage_state = 'level'
             self.data.level_health = 3
             self.current_stage = Level(self.tmx_maps[self.data.current_level], self.level_frames, self.audio_files, self.data, self.switch_stage)
         else:
-            self.bgm_1.play(-1)
+            self.ow_bgm.play(-1)
+            if unlock == 9:
+                self.victory()
             if unlock > 0:
                 self.data.unlocked_level = unlock
             else:
@@ -242,6 +280,7 @@ class Game:
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
                         if self.stage_state == 'overworld':
+                            pygame.mixer.stop()
                             self.main_menu()
                     if event.key == pygame.K_b:
                         if self.stage_state == 'overworld':
@@ -258,6 +297,7 @@ class Game:
             pygame.display.update()
             
     def main_menu(self):
+        self.ow_bgm.play(-1)
         background_image = pygame.image.load(join('..', 'graphics', 'backgrounds','main.png'))
         while True:
             self.display_surface.blit(background_image, (0, 0))
