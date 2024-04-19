@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="git" orientation="orthogonal" renderorder="right-down" width="120" height="90" tilewidth="16" tileheight="16" infinite="0" nextlayerid="17" nextobjectid="88">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="120" height="90" tilewidth="16" tileheight="16" infinite="0" nextlayerid="17" nextobjectid="88">
  <tileset firstgid="1" source="../tilesets/platform_tiles.tsx"/>
  <tileset firstgid="257" source="../../items/coin.tsx"/>
  <tileset firstgid="258" source="../../enemies/gunner.tsx"/>
@@ -105,7 +105,7 @@
  </layer>
  <objectgroup id="16" name="Data">
   <properties>
-   <property name="level_unlock" type="int" value="2"/>
+   <property name="level_unlock" type="int" value="3"/>
   </properties>
  </objectgroup>
  <layer id="7" name="BG" width="120" height="90">

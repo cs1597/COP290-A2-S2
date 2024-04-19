@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="git" orientation="orthogonal" renderorder="right-down" width="120" height="90" tilewidth="16" tileheight="16" infinite="0" nextlayerid="15" nextobjectid="111">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="120" height="90" tilewidth="16" tileheight="16" infinite="0" nextlayerid="15" nextobjectid="111">
  <tileset firstgid="1" source="../tsx_files/Background.tsx"/>
  <tileset firstgid="25321" source="../player/player.tsx"/>
  <tileset firstgid="25322" source="../tsx_files/Tiles_1.tsx"/>
@@ -105,7 +105,7 @@
  </layer>
  <objectgroup id="14" name="Data">
   <properties>
-   <property name="level_unlock" type="int" value="2"/>
+   <property name="level_unlock" type="int" value="5"/>
   </properties>
  </objectgroup>
  <layer id="12" name="Backdrop" width="120" height="90">
