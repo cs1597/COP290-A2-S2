@@ -10,7 +10,7 @@ class UI:
         
         self.heart_frames = frames['heart']
         self.heart_width = self.heart_frames[0].get_width()
-        self.heart_padding = 5
+        self.heart_padding = 10
         self.create_hearts(5)
         
     def create_hearts(self, num):

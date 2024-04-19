@@ -11,6 +11,7 @@ class Level:
     def __init__(self, tmx_map, level_frames, audio_files, data, switch_stage):
         self.display_surface = pygame.display.get_surface()
         self.data = data
+        self.data.level_health = 3
         self.switch_stage = switch_stage
         
         self.level_width = tmx_map.width * TILE_SIZE
@@ -155,7 +156,7 @@ class Level:
                 if resume_button.checkForInput(pointer):
                     self.level_pause = False
                 if overworld_button.checkForInput(pointer):
-                    self.switch_stage('overworld', self.data.unlocked_level)
+                    self.switch_stage('overworld', -1)
                     self.level_pause = False
                 if options_button.checkForInput(pointer):
                     pass
@@ -207,11 +208,14 @@ class Level:
             self.player.hitbox_rect.right = self.level_width
             
         if self.player.hitbox_rect.bottom > self.level_bottom:
-            self.data.health=self.data.health-1
-            self.switch_stage('overwold', -1)
+            # self.data.health=self.data.health
+            self.switch_stage('overworld', -1)
+
+        if self.data.level_health == 0:
+            self.switch_stage('overworld', -1)
             
         if self.player.hitbox_rect.colliderect(self.level_finish_rect):
-            self.switch_stage('overwold', self.level_unlock)
+            self.switch_stage('overworld', self.level_unlock)
                 
                
     def run(self, dt):

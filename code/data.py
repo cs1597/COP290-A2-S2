@@ -2,6 +2,7 @@ class Data:
     def __init__(self, ui):
         self._coins = 0
         self._health = 5
+        self._level_health = 3
         self._diamonds = 0
         self.ui = ui
         self.unlocked_level = 1
@@ -10,6 +11,10 @@ class Data:
     @property
     def health(self):
         return self._health
+    
+    @property
+    def level_health(self):
+        return self._level_health
     
     @property
     def coins(self):
@@ -23,6 +28,11 @@ class Data:
     def health(self,value):
         self._health = value
         self.ui.create_hearts(self._health)
+    
+    @level_health.setter
+    def level_health(self,value):
+        self._level_health = value
+        self.ui.create_hearts(self._level_health)
         
     @coins.setter
     def coins(self,value):

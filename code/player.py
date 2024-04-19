@@ -73,7 +73,7 @@ class Player(pygame.sprite.Sprite):
             self.frame_index = 0
             self.audio_files['damage'].play()
             self.timers['damage_lock'].activate()
-            self.data.health -= 1
+            self.data.level_health -= 1
             
     def move(self, dt):
         # horizontal
@@ -163,14 +163,16 @@ class Player(pygame.sprite.Sprite):
         if self.state == 'damage' and (self.frame_index >= len(self.frames[self.state])):
             self.state = 'idle'
             self.damaged = False
-        if self.state == 'death' and (self.frame_index >= len(self.frames[self.state])-1):
-            self.switch_stage('overwold', -1)
-            self.data.health += 1
+        if self.state == 'death' and (self.frame_index == len(self.frames[self.state])-1):
+            # self.switch_stage('overworld', -1)
+            pass
+            # self.data.level_health += 1
         self.image = self.frames[self.state][int(self.frame_index) % len(self.frames[self.state])]
         self.image = self.image if self.facing_right else pygame.transform.flip(self.image, True, False)
         
     def get_state(self):
-        if self.data.health <= 0:
+        if self.data.level_health <= 0:
+            self.data.health -= 1
             self.state = 'death'
         elif self.on_surface['floor']:
             if self.attacking:
