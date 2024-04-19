@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="git" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="16" tileheight="16" infinite="0" nextlayerid="15" nextobjectid="97">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="16" tileheight="16" infinite="0" nextlayerid="15" nextobjectid="97">
+ <properties>
+  <property name="level_unlock" type="int" value="8"/>
+ </properties>
  <tileset firstgid="1" source="../tsx_files/BG_desert.tsx"/>
  <tileset firstgid="13301" source="../tsx_files/desert_maze.tsx"/>
  <tileset firstgid="13302" source="../tsx_files/desert tiles.tsx"/>
@@ -542,6 +545,11 @@
     <property name="speed" type="int" value="120"/>
    </properties>
   </object>
+ </objectgroup>
+ <objectgroup id="11" name="Data" locked="1">
+  <properties>
+   <property name="unlock_level" type="int" value="12"/>
+  </properties>
  </objectgroup>
  <layer id="12" name="Platforms" width="100" height="100">
   <data encoding="csv">

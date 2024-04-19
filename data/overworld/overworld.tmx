@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="git" orientation="orthogonal" renderorder="right-down" width="80" height="80" tilewidth="16" tileheight="16" infinite="0" nextlayerid="12" nextobjectid="53">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="80" height="80" tilewidth="16" tileheight="16" infinite="0" nextlayerid="13" nextobjectid="63">
  <tileset firstgid="1" source="../tsx_files/overworld map.tsx"/>
  <tileset firstgid="6401" source="level_icon.tsx"/>
  <tileset firstgid="6403" source="../tundra/tilesets/platform_tiles.tsx"/>
@@ -263,20 +263,13 @@
    <properties>
     <property name="left" value="-1r"/>
     <property name="right" value="1"/>
-    <property name="stage" type="int" value="1"/>
+    <property name="stage" type="int" value="4"/>
    </properties>
   </object>
   <object id="17" name="Node" gid="6402" x="424.333" y="489" width="100" height="100">
    <properties>
     <property name="left" value="0r"/>
     <property name="right" value="2"/>
-    <property name="stage" type="int" value="2"/>
-   </properties>
-  </object>
-  <object id="18" name="Node" gid="6402" x="364.667" y="183" width="100" height="100">
-   <properties>
-    <property name="left" value="2r"/>
-    <property name="right" value="3"/>
     <property name="stage" type="int" value="3"/>
    </properties>
   </object>
@@ -284,66 +277,45 @@
    <properties>
     <property name="left" value="3r"/>
     <property name="right" value="5"/>
-    <property name="stage" type="int" value="5"/>
+    <property name="stage" type="int" value="1"/>
    </properties>
   </object>
   <object id="20" name="Node" gid="6402" x="830.667" y="409" width="100" height="100">
    <properties>
     <property name="left" value="4r"/>
     <property name="right" value="6"/>
-    <property name="stage" type="int" value="6"/>
-   </properties>
-  </object>
-  <object id="21" name="Node" gid="6402" x="803.667" y="243.667" width="100" height="100">
-   <properties>
-    <property name="left" value="2r"/>
-    <property name="right" value="4"/>
-    <property name="stage" type="int" value="4"/>
+    <property name="stage" type="int" value="2"/>
    </properties>
   </object>
   <object id="22" name="Node" gid="6402" x="40.6667" y="1011.33" width="100" height="100">
    <properties>
     <property name="left" type="int" value="8"/>
     <property name="right" type="int" value="10"/>
-    <property name="stage" type="int" value="10"/>
-   </properties>
-  </object>
-  <object id="23" name="Node" gid="6402" x="459.333" y="926" width="100" height="100">
-   <properties>
-    <property name="left" value="9r"/>
-    <property name="right" value="11"/>
-    <property name="stage" type="int" value="11"/>
+    <property name="stage" type="int" value="7"/>
    </properties>
   </object>
   <object id="24" name="Node" gid="6402" x="514" y="1159.33" width="100" height="100">
    <properties>
     <property name="left" value="10r"/>
     <property name="right" value="12"/>
-    <property name="stage" type="int" value="12"/>
+    <property name="stage" type="int" value="8"/>
    </properties>
   </object>
   <object id="25" name="Node" gid="6402" x="928.667" y="1179.33" width="100" height="100">
    <properties>
     <property name="left" value="7r"/>
     <property name="right" value="9"/>
-    <property name="stage" type="int" value="8"/>
+    <property name="stage" type="int" value="6"/>
    </properties>
   </object>
   <object id="26" name="Node" gid="6402" x="755.333" y="851.333" width="100" height="100">
    <properties>
     <property name="left" value="6r"/>
     <property name="right" value="8"/>
-    <property name="stage" type="int" value="8"/>
+    <property name="stage" type="int" value="5"/>
    </properties>
   </object>
-  <object id="27" name="Node" gid="6402" x="1095.33" y="945.333" width="100" height="100">
-   <properties>
-    <property name="left" value="5r"/>
-    <property name="right" value="7"/>
-    <property name="stage" type="int" value="7"/>
-   </properties>
-  </object>
-  <object id="51" name="Node" x="76.0003" y="601.333">
+  <object id="51" name="Node" x="660" y="164">
    <properties>
     <property name="left" type="int" value="-1"/>
     <property name="right" type="int" value="0"/>
@@ -351,6 +323,6 @@
    </properties>
    <point/>
   </object>
-  <object id="52" name="player" gid="6659" x="214" y="686" width="16" height="32"/>
+  <object id="52" name="player" gid="6659" x="656.667" y="206" width="16" height="32"/>
  </objectgroup>
 </map>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="git" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="16" tileheight="16" infinite="0" nextlayerid="13" nextobjectid="95">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="16" tileheight="16" infinite="0" nextlayerid="13" nextobjectid="95">
  <tileset firstgid="1" source="../tsx_files/forest_maze_2.tsx"/>
  <tileset firstgid="2" source="../tsx_files/sky.tsx"/>
  <tileset firstgid="3602" source="../tsx_files/forest_tileset_2.tsx"/>
@@ -8,7 +8,7 @@
  <tileset firstgid="4764" source="../items/diamond.tsx"/>
  <tileset firstgid="4765" source="../tsx_files/key.tsx"/>
  <tileset firstgid="4766" source="../items/heart.tsx"/>
- <tileset firstgid="4767" source="../player/player.tsx"/>
+ <tileset firstgid="4770" source="../player/player.tsx"/>
  <layer id="3" name="BG" width="100" height="100">
   <data encoding="csv">
 2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,
@@ -367,7 +367,7 @@
   <object id="93" name="keys" gid="4765" x="1413.33" y="1509.33" width="32" height="32"/>
  </objectgroup>
  <objectgroup id="8" name="Objects">
-  <object id="94" name="player" gid="4767" x="42.6667" y="176" width="64" height="64"/>
+  <object id="94" name="player" gid="4770" x="42.6667" y="176" width="64" height="64"/>
  </objectgroup>
  <layer id="12" name="Platforms" width="100" height="100">
   <data encoding="csv">
@@ -682,7 +682,11 @@
 </data>
  </layer>
  <objectgroup id="9" name="Moving Objects"/>
- <objectgroup id="10" name="Data"/>
+ <objectgroup id="10" name="Data">
+  <properties>
+   <property name="level_unlock" type="int" value="6"/>
+  </properties>
+ </objectgroup>
  <layer id="11" name="FG_2" width="100" height="100">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
