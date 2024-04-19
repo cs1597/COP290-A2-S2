@@ -22,6 +22,7 @@ class Game:
         self.ui =UI(self.font, self.ui_frames)
         self.data = Data(self.ui)
         self.stage_state = 'overworld'
+        self.first_time = True
 
         self.clock = pygame.time.Clock()
         # Define paths to your images
@@ -107,7 +108,7 @@ class Game:
                 break
             time.sleep(1.5) 
 
-        self.main_menu()
+        self.run()
 
     def defeat(self):
         for idx, image_path in enumerate(self.defeat_images):
@@ -124,6 +125,7 @@ class Game:
         pygame.mixer.stop()
         if target == 'level':
             self.stage_state = 'level'
+            self.data.level_health = 3
             self.current_stage = Level(self.tmx_maps[self.data.current_level], self.level_frames, self.audio_files, self.data, self.switch_stage)
         else:
             self.bgm_1.play(-1)
@@ -171,7 +173,7 @@ class Game:
         
     def buy_lives(self):
         if self.data.coins >= 25:
-            self.data.coins -= 25
+            self.data.coins -= 25 
             self.data.health += 1
             self.display_text_animation("Yayy! One life added!!", (440, 30))
         else:
@@ -211,18 +213,20 @@ class Game:
             pointer = pygame.mouse.get_pos()
 
             main_menu_text = self.get_font(75).render("MAIN MENU", True, "#1e6b1d")
-            main_menu_rect = main_menu_text.get_rect(center=(640, 200))
+            main_menu_rect = main_menu_text.get_rect(center=(640, 150))
 
-            play_button = Button(image=pygame.image.load(join('..', 'graphics', 'buttons', 'menu_button.png')), pos=(640, 350), 
+            continue_button = Button(image=pygame.image.load(join('..', 'graphics', 'buttons', 'menu_button.png')), pos=(640, 275), 
+                                text_input="CONTINUE", font=self.get_font(50), base_color="#d7fcd4", hovering_color="White")
+            play_button = Button(image=pygame.image.load(join('..', 'graphics', 'buttons', 'menu_button.png')), pos=(640, 400), 
                                 text_input="NEW GAME", font=self.get_font(50), base_color="#d7fcd4", hovering_color="White")
-            options_button = Button(image=pygame.image.load(join('..', 'graphics', 'buttons', 'menu_button.png')), pos=(640, 475), 
-                                text_input="SETTINGS", font=self.get_font(50), base_color="#d7fcd4", hovering_color="White")
-            quit_button = Button(image=pygame.image.load(join('..', 'graphics', 'buttons', 'menu_button.png')), pos=(640, 600), 
+            options_button = Button(image=pygame.image.load(join('..', 'graphics', 'buttons', 'menu_button.png')), pos=(640, 525), 
+                                text_input="HOW TO PLAY", font=self.get_font(50), base_color="#d7fcd4", hovering_color="White")
+            quit_button = Button(image=pygame.image.load(join('..', 'graphics', 'buttons', 'menu_button.png')), pos=(640, 650), 
                                 text_input="QUIT", font=self.get_font(50), base_color="#d7fcd4", hovering_color="White")
 
             self.display_surface.blit(main_menu_text, main_menu_rect)
 
-            for button in [play_button, options_button, quit_button]:
+            for button in [continue_button,play_button, options_button, quit_button]:
                 button.changeColor(pointer)
                 button.update(self.display_surface)
             
@@ -231,8 +235,20 @@ class Game:
                     pygame.quit()
                     sys.exit()
                 if event.type == pygame.MOUSEBUTTONDOWN:
+                    if continue_button.checkForInput(pointer):
+                        if self.first_time:
+                            self.display_text_animation("Click on NEW GAME!!", (480, 30))
+                            time.sleep(1)
+                        else:
+                            self.run()
                     if play_button.checkForInput(pointer):
-                        self.run()
+                        self.first_time = False
+                        self.data.health = 5
+                        self.data.coins = 0
+                        self.data.diamonds = 0
+                        self.data.unlock_level = 1
+                        self.data.current_level = 1
+                        self.opening_cutscene()
                     if options_button.checkForInput(pointer):
                         pass
                     if quit_button.checkForInput(pointer):
@@ -290,6 +306,8 @@ class Game:
     def settings(self):
         pass     
 
-if __name__ == '__main__':
+def main():
     game = Game()
-    game.opening_cutscene()
+    game.main_menu()
+    
+main()
