@@ -72,10 +72,11 @@ class Game:
         
         self.tmx_maps = {
                          7: load_pygame(join('..', 'data', 'levels', 'desert_maze.tmx')),
-                         6: load_pygame(join('..', 'data', 'levels', 'forest_2.tmx')),
-                         2: load_pygame(join('..', 'data', 'levels', 'maze_1.tmx')),
-                         1: load_pygame(join('..', 'data', 'tundra','levels', 'platformer.tmx')),
-                         5: load_pygame(join('..', 'data', 'levels', 'ice_maze.tmx')),
+                         5: load_pygame(join('..', 'data', 'levels', 'forest_maze_2.tmx')),
+                         4: load_pygame(join('..', 'data', 'levels', 'forest_2.tmx')),
+                         3: load_pygame(join('..', 'data', 'levels', 'maze_1.tmx')),
+                         2: load_pygame(join('..', 'data', 'tundra','levels', 'platformer.tmx')),
+                         1: load_pygame(join('..', 'data', 'levels', 'ice_maze.tmx')),
                          }
         self.tmx_overworld = load_pygame(join('..', 'data', 'overworld', 'overworld.tmx'))
         # self.current_stage = Level(self.tmx_maps[1], self.level_frames, self.data, self.switch_stage)
@@ -222,8 +223,8 @@ class Game:
         time.sleep(1.5)
         
     def buy_lives(self):
-        if self.data.coins >= 25:
-            self.data.coins -= 25 
+        if self.data.coins >= 100:
+            self.data.coins -= 100 
             self.data.health += 1
             self.display_text_animation("Yayy! One life added!!", (440, 30))
         else:
@@ -288,7 +289,7 @@ class Game:
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if continue_button.checkForInput(pointer):
                         if self.first_time:
-                            self.display_text_animation("Click on NEW GAME!!", (480, 30))
+                            self.display_text_animation("Please start a NEW GAME!!", (480, 30))
                             time.sleep(1)
                         else:
                             self.run()
@@ -311,9 +312,9 @@ class Game:
     def shop(self):
         background_image = pygame.image.load(join('..', 'graphics', 'backgrounds','shop.png'))
         sprite_image = pygame.image.load(join('..', 'graphics', 'items','gold','0.png')) 
-        sprite_text_25 = self.get_font(25).render("25x", True, "#ffffff")
+        sprite_text_25 = self.get_font(25).render("100x", True, "#ffffff")
         sprite_rect = sprite_image.get_rect(center=(790, 350))
-        sprite_rect_25 = sprite_image.get_rect(center=(762, 355))
+        sprite_rect_25 = sprite_image.get_rect(center=(758, 355))
         sprite_image_diamond = pygame.image.load(join('..', 'graphics', 'items','diamond','0.png')) 
         sprite_text_50 = self.get_font(25).render("50x", True, "#ffffff")
         sprite_rect_diamond = sprite_image.get_rect(center=(790, 470))
