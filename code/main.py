@@ -383,7 +383,7 @@ class Game:
                         self.data.health = 5
                         self.data.coins = 0
                         self.data.diamonds = 0
-                        self.data.unlocked_level = 9
+                        self.data.unlocked_level = 1
                         self.data.current_level = 1
                         self.opening_cutscene()
                     if options_button.checkForInput(pointer):
