@@ -51,6 +51,24 @@ class Game:
             "In the shadowed silence of the forest, Eli faces his toughest moment yet.",
             "Rise again, Eli. The forest calls, your journey awaits, with a renewed spirit."
         ]
+        self.ow_htp = [
+            "This is the OVERWORLD.",
+            "Use W, A, S, D to navigate the player",
+            "The map consists of four regions, each with two levels",
+            "To enter a level, reach to the level location and press the ENTER key",
+            "Locked levels are displayed in Black and White while the unlocked levels are in color",
+            "Collect coins and diamonds to buy lives and unlock levels. Press B to enter shop",
+            "To go back to the main menu, press ESC"
+        ]
+        
+        self.level_htp = [
+            "This is a level.",
+            "Use A, D to navigate the player. Use S to fall through platforms",
+            "Use SPACE to jump and X to attack",
+            "There are two types of levels: Maze and Rescue",
+            "Reach the other end of the Maze level and retrieve the key",
+            "Find and rescue the caged animal in the Rescue level"
+        ]
         
         self.tmx_maps = {
                          7: load_pygame(join('..', 'data', 'levels', 'desert_maze.tmx')),
@@ -75,11 +93,14 @@ class Game:
                 return True
         return False
 
-    def fade_in(self, image, speed=10):
+    def fade_in(self, image, speed=10, htp = False):
         for alpha in range(0, 255, speed):
             self.display_surface.fill((0, 0, 0))
             image.set_alpha(alpha)
-            self.display_surface.blit(image, ((WINDOW_WIDTH-900)/2, WINDOW_HEIGHT/10))
+            if htp:
+                self.display_surface.blit(image, (265, 270))
+            else:
+                self.display_surface.blit(image, ((WINDOW_WIDTH-900)/2, WINDOW_HEIGHT/10))
             pygame.display.update()
             self.clock.tick(30)
             if self.check_skip():
@@ -109,6 +130,25 @@ class Game:
             time.sleep(1.5) 
 
         self.run()
+        
+    def how_to_play(self):
+        background_image_1 = pygame.image.load(join('..', 'graphics', 'how_to_play','overworld.png'))
+        background_image_2 = pygame.image.load(join('..', 'graphics', 'how_to_play','level.png'))
+        
+        if self.fade_in(background_image_1, htp = True):
+            return
+        for idx, text in enumerate(self.ow_htp):
+            if self.display_text_animation(text, (40, 32*(idx+1))):
+                break
+            time.sleep(1)
+        if self.fade_in(background_image_2, htp = True):
+            return
+        for idx, text in enumerate(self.level_htp):
+            if self.display_text_animation(text, (40, 32*(idx+1))):
+                break
+            time.sleep(1)
+        
+        self.main_menu()
 
     def defeat(self):
         for idx, image_path in enumerate(self.defeat_images):
@@ -118,7 +158,8 @@ class Game:
             if self.display_text_animation(self.defeat_scripts[idx], (40, 30)):
                 break
             time.sleep(1.5) 
-
+        
+        self.first_time = True
         self.main_menu()
        
     def switch_stage(self, target, unlock = 0):
@@ -171,6 +212,15 @@ class Game:
             'attack' : pygame.mixer.Sound(join('..', 'audio', 'attack.wav')),
             }
         
+    def skip_level(self):
+        if self.data.diamonds >= 50:
+            self.data.diamonds -= 50 
+            self.data.unlocked_level += 1
+            self.display_text_animation("Yayy! Next level unlocked!!", (440, 30))
+        else:
+            self.display_text_animation("You don't have enough diamonds!", (420, 30))
+        time.sleep(1.5)
+        
     def buy_lives(self):
         if self.data.coins >= 25:
             self.data.coins -= 25 
@@ -179,6 +229,7 @@ class Game:
         else:
             self.display_text_animation("You don't have enough coins!", (420, 30))
         time.sleep(1.5)
+
 
     def run(self):
         while True:
@@ -250,7 +301,7 @@ class Game:
                         self.data.current_level = 1
                         self.opening_cutscene()
                     if options_button.checkForInput(pointer):
-                        pass
+                        self.how_to_play()
                     if quit_button.checkForInput(pointer):
                         pygame.quit()
                         sys.exit()
@@ -263,6 +314,10 @@ class Game:
         sprite_text_25 = self.get_font(25).render("25x", True, "#ffffff")
         sprite_rect = sprite_image.get_rect(center=(790, 350))
         sprite_rect_25 = sprite_image.get_rect(center=(762, 355))
+        sprite_image_diamond = pygame.image.load(join('..', 'graphics', 'items','diamond','0.png')) 
+        sprite_text_50 = self.get_font(25).render("50x", True, "#ffffff")
+        sprite_rect_diamond = sprite_image.get_rect(center=(790, 470))
+        sprite_rect_50 = sprite_image.get_rect(center=(762, 475))
         while True:
             self.display_surface.blit(background_image, (0, 0))
 
@@ -277,7 +332,7 @@ class Game:
             play_button = Button(image=pygame.image.load(join('..', 'graphics', 'buttons', 'menu_button.png')), pos=(640, 350), 
                                 text_input="BUY LIVES", font=self.get_font(50), base_color="#d7fcd4", hovering_color="White")
             options_button = Button(image=pygame.image.load(join('..', 'graphics', 'buttons', 'menu_button.png')), pos=(640, 475), 
-                                text_input="SETTINGS", font=self.get_font(50), base_color="#d7fcd4", hovering_color="White")
+                                text_input="SKIP LEVEL", font=self.get_font(50), base_color="#d7fcd4", hovering_color="White")
             quit_button = Button(image=pygame.image.load(join('..', 'graphics', 'buttons', 'menu_button.png')), pos=(640, 600), 
                                 text_input="BACK", font=self.get_font(50), base_color="#d7fcd4", hovering_color="White")
 
@@ -288,6 +343,8 @@ class Game:
 
             self.display_surface.blit(sprite_image, sprite_rect)
             self.display_surface.blit(sprite_text_25, sprite_rect_25)
+            self.display_surface.blit(sprite_image_diamond, sprite_rect_diamond)
+            self.display_surface.blit(sprite_text_50, sprite_rect_50)
             
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -297,14 +354,12 @@ class Game:
                     if play_button.checkForInput(pointer):
                         self.buy_lives()
                     if options_button.checkForInput(pointer):
-                        pass
+                        self.skip_level()
                     if quit_button.checkForInput(pointer):
                         self.run()
 
             pygame.display.update()
-
-    def settings(self):
-        pass     
+   
 
 def main():
     game = Game()
