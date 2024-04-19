@@ -77,6 +77,10 @@ class Level:
                 frames = level_frames[obj.name]
                 AnimatedSprite((obj.x, obj.y), frames, (self.all_sprites))
                 self.level_finish_rect = pygame.Rect((obj.x, obj.y), (obj.width, obj.height))
+            elif obj.name =='camel':
+                frames = level_frames[obj.name]
+                AnimatedSprite((obj.x, obj.y), frames, (self.all_sprites))
+                self.level_finish_rect = pygame.Rect((obj.x, obj.y), (obj.width, obj.height))
             elif obj.name =='polar bear':
                 frames = level_frames[obj.name]
                 AnimatedSprite((obj.x, obj.y), frames, (self.all_sprites))
