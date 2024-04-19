@@ -657,7 +657,7 @@
  </layer>
  <objectgroup id="13" name="Data">
   <properties>
-   <property name="level_unlock" type="int" value="3"/>
+   <property name="level_unlock" type="int" value="8"/>
   </properties>
  </objectgroup>
  <layer id="9" name="FG_2" width="100" height="100" locked="1">

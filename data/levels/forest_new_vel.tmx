@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="120" height="90" tilewidth="16" tileheight="16" infinite="0" nextlayerid="17" nextobjectid="101">
+<map version="1.10" tiledversion="git" orientation="orthogonal" renderorder="right-down" width="120" height="90" tilewidth="16" tileheight="16" infinite="0" nextlayerid="17" nextobjectid="101">
  <tileset firstgid="1" source="../tundra/tilesets/platform_tiles.tsx"/>
  <tileset firstgid="257" source="../items/coin.tsx"/>
  <tileset firstgid="258" source="../enemies/gunner.tsx"/>
@@ -112,7 +112,7 @@
  </layer>
  <objectgroup id="16" name="Data">
   <properties>
-   <property name="level_unlock" type="int" value="7"/>
+   <property name="level_unlock" type="int" value="9"/>
   </properties>
  </objectgroup>
  <layer id="7" name="BG" width="120" height="90">
@@ -516,13 +516,6 @@
    </properties>
   </object>
   <object id="28" name="spikes" gid="259" x="325" y="1279" width="64" height="64">
-   <properties>
-    <property name="damage_height" type="int" value="-25"/>
-    <property name="damage_width" type="int" value="64"/>
-    <property name="flip" type="bool" value="false"/>
-   </properties>
-  </object>
-  <object id="33" name="spikes" gid="259" x="1656" y="574" width="64" height="64">
    <properties>
     <property name="damage_height" type="int" value="-25"/>
     <property name="damage_width" type="int" value="64"/>

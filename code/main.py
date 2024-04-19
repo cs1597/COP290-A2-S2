@@ -92,7 +92,7 @@ class Game:
         self.tmx_maps = {
                          8: load_pygame(join('..', 'data', 'levels', 'desert_level.tmx')),
                          7: load_pygame(join('..', 'data', 'levels', 'desert_maze.tmx')),
-                         7: load_pygame(join('..', 'data', 'levels', 'forest_new_vel.tmx')),
+                         6: load_pygame(join('..', 'data', 'levels', 'forest_new_vel.tmx')),
                          5: load_pygame(join('..', 'data', 'levels', 'forest_maze_2.tmx')),
                          4: load_pygame(join('..', 'data', 'levels', 'forest_2.tmx')),
                          3: load_pygame(join('..', 'data', 'levels', 'maze_1.tmx')),
@@ -303,7 +303,7 @@ class Game:
             self.display_text_animation("Yayy! Next level unlocked!!", (440, 30))
         else:
             self.display_text_animation("You don't have enough diamonds!", (420, 30))
-        time.sleep(1.5)
+        time.sleep(1)
         
     def buy_lives(self):
         if self.data.coins >= 100:
@@ -312,7 +312,7 @@ class Game:
             self.display_text_animation("Yayy! One life added!!", (440, 30))
         else:
             self.display_text_animation("You don't have enough coins!", (420, 30))
-        time.sleep(1.5)
+        time.sleep(1)
 
 
     def run(self):
@@ -383,7 +383,7 @@ class Game:
                         self.data.health = 5
                         self.data.coins = 0
                         self.data.diamonds = 0
-                        self.data.unlocked_level = 8
+                        self.data.unlocked_level = 9
                         self.data.current_level = 1
                         self.opening_cutscene()
                     if options_button.checkForInput(pointer):
